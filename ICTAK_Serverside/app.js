@@ -9,18 +9,14 @@ require('./db/mongoDb');
 
 
 
+//Routes
+const projectlistRoute = require('./routes/projectslistRoute');
 
 
-
-
-
-
-
-
+app.use('/admin', projectlistRoute)
 
 
 
 app.listen(process.env.PORT, () => {
     console.log(`server is listening on PORT ${process.env.PORT}`);
 })
-
