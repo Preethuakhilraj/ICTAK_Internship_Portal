@@ -1,0 +1,63 @@
+.card-tb {
+  width: 300px;
+  margin-bottom: 1.5%;
+
+  box-shadow: 0px 0px 15px -5px;
+  transition: 0.3s;
+  animation: ease-in;
+  margin-right: 1%;
+}
+.card-tb:last-child {
+  margin-right: 0;
+}
+
+.card-tb:hover {
+  /* transform: scale(1.1); */
+  box-shadow: 0px 0px 15px 0px;
+}
+
+.card-face {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 5%;
+}
+
+.image-tb img {
+  height: 200px;
+  width: 100%;
+}
+
+/*1rem is 16px   0.5rem is 8px  */
+
+.card-content {
+  margin: 1rem;
+  margin-top: 0.5rem;
+}
+
+h3,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+}
+
+.btn3 button {
+  display: flex;
+  justify-content: center;
+  background:linear-gradient(rgba(15, 15, 238, 0.932), rgb(0, 0, 0));
+  color: #ffffff;
+  padding: 1px 22px;
+  font-size: 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  margin-top: 1%;
+
+}
+
+
