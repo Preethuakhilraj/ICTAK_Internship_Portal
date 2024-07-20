@@ -1,0 +1,172 @@
+/* General styles for the container */
+.container {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Adjust the height of the container as needed */
+    overflow: hidden;
+    margin: 20px 0; /* Adjust the margins as needed */
+    border-radius: 1.25rem;
+  }
+  
+  /* Styles for the background image */
+  .bg-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; 
+  }
+  
+  .container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 18%, rgba(0, 0, 0, 0.65) 39%, rgba(0, 0, 0, 0.53) 86%, rgba(0, 0, 0, 0.5));
+    border-radius: 1.25rem; /* Adjust border-radius as needed */
+  }
+  
+  /* Styles for the profile content */
+  .content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between  ;
+    align-items: center;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  /* Styles for the profile image */
+  .profile-image {
+    border: 0.5rem solid #fff;
+    border-radius: 1.25rem;
+    height: 150px;
+    width: 150px;
+    
+  }
+  
+  /* Positioning for the profile picture */
+  .profile-pic {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: flex-end;
+
+  }
+  
+  /* Styles for the profile details */
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-left: 180px; /* Adjust the margin to align next to the profile picture */
+    flex-grow: 1;
+
+  }
+  
+  .employee-name {
+    font-size: 24px;
+    color: #fff;
+    margin-top: 230px;
+  }
+  
+  /* Styles for the "Update Profile" button */
+  .update-profile-button {
+    align-self: flex-end;
+    margin-left: auto;
+    padding: 8px 16px;
+    background-color: #024acf;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  
+  .update-profile-button:hover {
+    background-color: #019be9;
+  }
+  
+  /* Project heading styles */
+  .project-head {
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 40px;
+    font-size: 24px !important;
+    color: #000;
+  }
+  
+  /* Styles for the project card container */
+  .card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  /* Project card styles */
+  .project-card {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .project-card img {
+    width: 335px;
+    height: 150px;
+    border-radius: 10px;
+  }
+  
+  .project-card-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 20px;
+    width: 100%;
+  }
+  
+  .project-card-title {
+    font-size: 24px !important;
+    font-weight: bold !important;
+  }
+  
+  
+  .project-card button {
+    align-self: flex-start;
+    padding: 10px 40px;
+    border-radius: 0.5rem;
+  }
+  
+
+
+
+/* Evaluation css */
+.textField {
+  width: 1185px;
+  height: 150px;
+  margin-left: 0;
+  margin-top: 20px;
+  margin-right: -100px;
+  justify-content: start;
+  display: flex;
+}
+
+.mark {
+  margin-left: 0;
+  margin-top: 20px;
+  margin-right: -100px;
+  justify-content: start;
+  display: flex;
+}
+
