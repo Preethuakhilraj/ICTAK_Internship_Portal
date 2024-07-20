@@ -35,9 +35,11 @@ function ClippedDrawer() {
         case '/evaluation':
           return 'Evaluation';
         case '/reference-materials':
-          return 'Reference Materials';   
+          return 'Reference Materials';
         case '/reference-materials-form':
-          return 'Add Reference Materials';         
+          return 'Add Reference Materials';
+        case '/admin':
+          return 'Admin Dashboard';
         default:
           return 'Dashboard';
       }

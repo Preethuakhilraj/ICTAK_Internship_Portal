@@ -22,6 +22,7 @@ import RPA from "./assets/rpa.png";
 import Virtual_internship_rpa from "./assets/virtual-internship-RPA.png";
 import Java_programming from "./assets/java-programming.png";
 import Footer from "./components/Home/Footer";
+import ProjectsList from './components/admin/ProjectsList';
 
 const internships = [
   {
@@ -86,18 +87,30 @@ function App() {
  
 
   return (
-    
-      <Routes>
-         <Route path='/' element={<HomeWithNavbar />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/mentordashboard' element={<Main child={<MentorDashboard />} />} />
-        <Route path="/submissions/:projectTopic" element={<Main child={<Submissions />} />} />
-        <Route path="/evaluate/:id" element={<Main child={<Evaluation />} />} />
-        <Route path="/edit/:id" element={<Main child={<Evaluation />} />} />
-        <Route path="/reference-materials" element={<Main child={<ReferenceMaterial />} />} />
-        <Route path="/reference-materials-form" element={<Main child={<ReferenceMaterialForm />} />} />
-      </Routes>
-  )
+    <Routes>
+      <Route path="/" element={<HomeWithNavbar />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin" element={<Main child={<ProjectsList />} />} />
+      <Route
+        path="/mentordashboard"
+        element={<Main child={<MentorDashboard />} />}
+      />
+      <Route
+        path="/submissions/:projectTopic"
+        element={<Main child={<Submissions />} />}
+      />
+      <Route path="/evaluate/:id" element={<Main child={<Evaluation />} />} />
+      <Route path="/edit/:id" element={<Main child={<Evaluation />} />} />
+      <Route
+        path="/reference-materials"
+        element={<Main child={<ReferenceMaterial />} />}
+      />
+      <Route
+        path="/reference-materials-form"
+        element={<Main child={<ReferenceMaterialForm />} />}
+      />
+    </Routes>
+  );
 }
 
 function HomeWithNavbar() {
