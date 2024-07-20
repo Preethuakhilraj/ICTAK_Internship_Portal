@@ -12,7 +12,7 @@ import Main from './components/Main';
 function App() {
 
   return (
-    <Router>
+    
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/mentordashboard' element={<Main child={<MentorDashboard />} />} />
@@ -22,7 +22,6 @@ function App() {
         <Route path="/reference-materials" element={<Main child={<ReferenceMaterial />} />} />
         <Route path="/reference-materials-form" element={<Main child={<ReferenceMaterialForm />} />} />
       </Routes>
-    </Router>
   )
 }
 
