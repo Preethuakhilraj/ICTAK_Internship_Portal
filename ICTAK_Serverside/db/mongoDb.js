@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MongoDB_URL)
-    .then(() => {
-        console.log("DB is Connected");
-    })
-    .catch((error) => {
-        console.log(error);
+require('dotenv').config();
+
+const db=mongoose.connect(process.env.MONGODB_URL || "mongodb+srv://preethuakhilraj:preethu@cluster0.spk2oik.mongodb.net/ICTDB?retryWrites=true&w=majority&appName=Cluster0")
+.then(() => {
+  console.log("DB is connected");
 })
+.catch((error) => {
+  console.error('Error in connection', error);
+});
+
+module.exports = db;
