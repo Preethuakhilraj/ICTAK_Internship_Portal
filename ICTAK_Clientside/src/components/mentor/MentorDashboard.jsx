@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -10,12 +11,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Dashboard, Logout } from '@mui/icons-material';
-import { Alert, Button, Card, CardContent, CardMedia, CircularProgress } from '@mui/material';
+import { Dashboard, LibraryBooks } from '@mui/icons-material';
+import { Button, Card, CardContent, CardMedia, CircularProgress, Alert } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axiosInstance from './axiosinterceptor'; // Assuming this is your Axios instance with interceptors
-
+import axiosInstance from '../axiosinterceptor'; // Import axios instance
+import './Mentordashboard.css'; // Import your CSS file
 
 const drawerWidth = 240;
 
@@ -23,33 +23,10 @@ const theme = createTheme({
   typography: {
     fontFamily: 'Poppins, Arial, sans-serif', // Specify Poppins as the default font
   },
-});  
+});
 
-// backend
-
-const ProjectCard = ({ project, handleView }) => (
-  <Card className="project-card">
-    <CardMedia
-      component="img"
-      image="https://www.shutterstock.com/image-vector/internship-blue-green-typography-banner-260nw-1366933799.jpg"
-      alt={project.name}
-    />
-    <CardContent className="project-card-details">
-      <Typography className="project-card-title">{project.name}</Typography>
-      <Button size="small" color="primary" style={{ backgroundColor: '#024acf', color: 'white' }} onClick={() => handleView(project._id)}>
-        View
-      </Button>
-    </CardContent>
-  </Card>
-);
-
-// backend
-
-export default function ClippedDrawer() {
-
-// backend
-
-const [data, setData] = useState([]);
+export default function MentorDashboard() {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState('');
@@ -59,7 +36,7 @@ const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get('./')
+        const response = await axiosInstance.get('/mentor/projects');
         console.log('API Response:', response.data);
         setData(response.data || []);
         setLoading(false);
@@ -80,19 +57,16 @@ const [data, setData] = useState([]);
     }
   }, []);
 
-  const handleView = (projectId) => {
-    navigate(`/submissions/${projectId}`);
+  const handleView = (projectTopic) => {
+    navigate(`/submissions/${projectTopic}`);
   };
 
   if (loading) return <Box display="flex" justifyContent="center" alignItems="center" height="5vh"><CircularProgress /></Box>;
   if (error) return <Alert severity="error">Error: {error.message}</Alert>;
 
-//backend
-
-
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', width: '100%' }}>
+      <Box sx={{ display: 'flex', width: '100vw' }}>
         <CssBaseline />
         <Drawer
           variant="permanent"
@@ -105,27 +79,40 @@ const [data, setData] = useState([]);
         >
           <Toolbar />
           <Box sx={{ overflow: 'auto' }}>
-            <Link to={'/'}>
             <List>
-              {['Dashboard'].map((text) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton 
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/mentordashboard"
                   sx={{
                     color: 'rgba(0, 0, 0, 0.87)', // Default text color
                   }}
-                  >
-                    <ListItemIcon>
-                      <Dashboard />
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List></Link>
+                >
+                  <ListItemIcon>
+                    <Dashboard />
+                  </ListItemIcon>
+                  <ListItemText primary="Dashboard" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to="/reference-materials"
+                  sx={{
+                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
+                  }}
+                >
+                  <ListItemIcon>
+                    <LibraryBooks />
+                  </ListItemIcon>
+                  <ListItemText primary="Reference Materials" />
+                </ListItemButton>
+              </ListItem>
+            </List>
             <Divider />
           </Box>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 0, m: 0, width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden'}}>
+        <Box component="main" sx={{ flexGrow: 1, px: 3, py: 2, width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden' }}>
           <Toolbar />
           <div className="container">
             <img
@@ -142,64 +129,40 @@ const [data, setData] = useState([]);
                 />
               </div>
               <div className="profile-details">
-                <h4 className="employee-name">Mentor Name</h4>
+                <h4 className="employee-name">{user}</h4>
               </div>
-              <button className="update-profile-button">Update Profile</button>
+              
+              <Button variant="contained" className="update-profile-button"
+              >Update Profile</Button>
             </div>
           </div>
-          <Typography className="project-head">
-            <h2>Projects</h2>
+          <Typography variant="h4" className="project-head">
+            Projects
           </Typography>
           <div className="card-container">
-              
-              {/* backend */}
-
-              {data.length === 0 ? (
-              <p>No projects found.</p>
-            ) : (
-              data.map((project) => (
-                <ProjectCard key={project._id} project={project} handleView={handleView} />
-              ))
-            )}
-
-              {/* backend */}
-
-
-          {/* <Card className="project-card">
-  <CardMedia
-    component="img"
-    image="https://www.shutterstock.com/image-vector/internship-blue-green-typography-banner-260nw-1366933799.jpg"
-    alt="Project Image"
-  />
-  <CardContent className="project-card-details">
-    <Typography className="project-card-title">
-      Mern Full Stack Development
-    </Typography>
-    <Link to={'/submissions'}>
-    <Button size="small" color="primary" style={{ backgroundColor: '#024acf', color: 'white' }}>
-      View
-    </Button></Link>
-  </CardContent>
-</Card>
-
-<Card className="project-card">
-  <CardMedia
-    component="img"
-    image="https://www.shutterstock.com/image-vector/internship-blue-green-typography-banner-260nw-1366933799.jpg"
-    alt="Project Image"
-  />
-  <CardContent className="project-card-details">
-    <Typography className="project-card-title">
-      Mean Full Stack Development
-    </Typography>
-    <Link to={'/submissions'}>
-    <Button size="small" color="primary" style={{ backgroundColor: '#024acf', color: 'white' }}>
-      View
-    </Button>
-    </Link>
-  </CardContent>
-</Card> */}
-            {/* Add more cards here */}
+            {data.map((project) => (
+              <Card key={project.id} className="project-card">
+                <CardMedia
+                  component="img"
+                  src="https://cdn-jokon.nitrocdn.com/AwoEWBPBIgGShARSNTzFxrQfWkDFHrAw/assets/images/optimized/rev-470ca55/www.rankraze.com/wp-content/uploads/2023/07/internship-blue-green-typography-banner-260nw-1366933799-e1690735957752.webp"
+                  alt="Project"
+                  className="project-image"
+                />
+                <CardContent className="project-card-details">
+                  <Typography variant="h6" className="project-card-title">
+                  {project}
+                  </Typography>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    className="view-button"
+                    onClick={() => handleView(project)}
+                  >
+                    View
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </Box>
       </Box>
