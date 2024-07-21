@@ -27,7 +27,7 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import UpdateIcon from '@mui/icons-material/Update';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { Dashboard } from '@mui/icons-material';
@@ -78,6 +78,10 @@ const ProjectsList = () => {
   };
 
   const handleAdd = async () => {
+    if (!newProject.topic || !newProject.stack || !newProject.duration) {
+      alert('Please fill in all fields.');
+      return;
+    }
     try {
       const response = await axiosInstance.post(
         '/admin/addproject',
@@ -125,11 +129,16 @@ const ProjectsList = () => {
 
   //deleting project details
   const handleDelete = async (id) => {
-    try {
-      await axiosInstance.delete(`/admin/deleteproject/${id}`);
-      setData(data.filter((project) => project._id !== id));
-    } catch (error) {
-      console.error('Error deleting project:', error);
+    const confirmDelete = window.confirm(
+    'Are you sure you want to delete this project?'
+  );
+    if (confirmDelete) {
+      try {
+        await axiosInstance.delete(`/admin/deleteproject/${id}`);
+        setData(data.filter((project) => project._id !== id));
+      } catch (error) {
+        console.error('Error deleting project:', error);
+      }
     }
   };
 
@@ -234,7 +243,7 @@ const ProjectsList = () => {
                   <TableCell align="right">
                     {/* icons for updatte and delete */}
                     <IconButton onClick={() => handleOpenUpdateDialog(row)}>
-                      <UpdateIcon color="primary" />
+                      <EditIcon color="primary" />
                     </IconButton>
 
                     <IconButton onClick={() => handleDelete(row._id)}>
