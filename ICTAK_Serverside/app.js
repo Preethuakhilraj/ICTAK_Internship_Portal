@@ -16,12 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Routes
 const projectlistRoute = require('./routes/projectslistRoute');
 const mentorroute = require('./routes/Mentorroute');
-const adminroute = require('./routes/adminroute');
 const loginroute = require('./routes/login');
 const submissionroute = require('./routes/submissionRoutes');
 const referenceroute = require('./routes/reference');
 app.use('/mentor', mentorroute);
-app.use('/admin', adminroute);
 app.use('/login', loginroute);
 app.use('/submission', submissionroute);
 app.use('/reference', referenceroute);
