@@ -74,7 +74,7 @@ const Submissions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axiosInstance.delete(`/submissions/${id}`);
+      await axiosInstance.delete(`/submission/${id}`);
       setSubmissions((prevSubmissions) => prevSubmissions.filter((submission) => submission._id !== id));
     } catch (error) {
       console.error('Error deleting submission:', error);

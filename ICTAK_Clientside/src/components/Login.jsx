@@ -20,7 +20,13 @@ export default function Login() {
         const { token, user } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
-        navigate('/mentordashboard');
+         if (user.role === 'admin') {
+           navigate('/admin');
+         } else if (user.role === 'mentor') {
+           navigate('/mentordashboard');
+         } else {
+           console.error('Unknown user role:', user.role);
+         }
       }
     } catch (error) {
       console.error('Login error:', error);
