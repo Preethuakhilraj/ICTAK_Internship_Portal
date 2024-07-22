@@ -3,7 +3,7 @@ const projlist = require('../model/projectslist');
 const ProjectsList = async (req, res) => {   
     try {
         const projectslist = await projlist.find({});   
-         console.log(projectslist);  
+        //  console.log(projectslist);  
         res.status(200).json(projectslist);
     } catch (err) {
         console.log(err);
@@ -33,6 +33,8 @@ const updateProject = async (req, res) => {
     try{
         const project = await projlist.findByIdAndUpdate( req.params.id,req.body, {new:true});
         res.status(200).json(project);
+        if (!project)
+        return res.status(404).json({ message: 'Project not found' });
     }
     catch (error) {
         console.log(error);
@@ -42,7 +44,8 @@ const updateProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
     try{
-        await projlist.findByIdAndDelete( req.params.id);
+        const project = await projlist.findByIdAndDelete(req.params.id);
+        if (!project) return res.status(404).json({ message: 'Project not found' });
         res.status(200).json({message: "Project deleted successfully"});
     }
     catch (error) {
