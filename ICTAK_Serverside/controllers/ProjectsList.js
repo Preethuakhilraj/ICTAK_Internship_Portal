@@ -1,4 +1,4 @@
-const projlist = require('../model/projectslist');
+const projlist = require('../model/projects');
 
 const ProjectsList = async (req, res) => {   
     try {
@@ -31,7 +31,7 @@ const addProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
     try{
-        const project = await projlist.findByIdAndUpdate( req.params.id,req.body, {new:true});
+        const project = await projlist.findByIdAndUpdate( req.params._id,req.body, {new:true});
         res.status(200).json(project);
         if (!project)
         return res.status(404).json({ message: 'Project not found' });
@@ -44,7 +44,7 @@ const updateProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
     try{
-        const project = await projlist.findByIdAndDelete(req.params.id);
+        const project = await projlist.findByIdAndDelete(req.params._id);
         if (!project) return res.status(404).json({ message: 'Project not found' });
         res.status(200).json({message: "Project deleted successfully"});
     }

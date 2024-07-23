@@ -1,4 +1,4 @@
-const mentorlist = require('../model/mentorslist')
+const mentorlist = require('../model/mentor')
 
 const MentorsList = async (req, res) => {
   try {

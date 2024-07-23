@@ -23,6 +23,7 @@ import Virtual_internship_rpa from "./assets/virtual-internship-RPA.png";
 import Java_programming from "./assets/java-programming.png";
 import Footer from "./components/Home/Footer";
 import ProjectsList from './components/admin/ProjectsList';
+import MentorsList from './components/admin/MentorsList';
 
 const internships = [
   {
@@ -91,6 +92,7 @@ function App() {
       <Route path="/" element={<HomeWithNavbar />} />
       <Route path="/login" element={<Login />} />
       <Route path="/admin" element={<Main child={<ProjectsList />} />} />
+      <Route path="/admin/mentorslist" element={<Main child={<MentorsList />} />} />
       <Route
         path="/mentordashboard"
         element={<Main child={<MentorDashboard />} />}

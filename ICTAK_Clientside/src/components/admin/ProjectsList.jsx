@@ -160,7 +160,7 @@ const ProjectsList = () => {
       >
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
-          <Link to={'/'}>
+          <Link to={'/admin'}>
             <List>
               {['Dashboard'].map((text) => (
                 <ListItem key={text} disablePadding>

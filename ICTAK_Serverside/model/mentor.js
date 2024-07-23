@@ -3,10 +3,18 @@ const Schema = mongoose.Schema;
 
 // Define Mentor Schema
 const mentorSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
     unique: true
+  },
+  phone: {
+    type: String,
+    required: true,
   },
   password: {
     type: String,
@@ -14,7 +22,7 @@ const mentorSchema = new Schema({
   },
   role: {
     type: String,
-    required: true
+    // required: true
   },
   projectTopic: {
     type: [String], // Changed to an array of strings
