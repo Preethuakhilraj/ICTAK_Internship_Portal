@@ -1,5 +1,6 @@
 import React from "react";
 import "./Hero.css";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -13,7 +14,8 @@ const Hero = () => {
           look forward to coming to every day. Start your journey with us by
           browsing available jobs.
         </p>
-        <button className="btn2">Join us</button>
+        <Link to={'/login'}>
+        <button className="btn2">Join us</button></Link>
       </div>
     </div>
   );
