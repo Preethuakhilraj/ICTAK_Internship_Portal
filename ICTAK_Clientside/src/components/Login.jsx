@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button,  TextField, Typography } from '@mui/material';
 import axiosInstance from './axiosinterceptor';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,31 +8,26 @@ const Image = 'https://images.pexels.com/photos/5950164/pexels-photo-5950164.jpe
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
-
+ 
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('/login', { email, password, role });
+      const response = await axiosInstance.post('/login', { email, password });
       if (response.status === 200) {
         const { token, user } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
-         if (user.role === 'admin') {
-           navigate('/admin');
-         } else if (user.role === 'mentor') {
-           navigate('/mentordashboard');
-         } else {
-           console.error('Unknown user role:', user.role);
-         }
-      }
+        if (user.email === 'ictak@example.com') {
+          navigate('/admindashboard');
+        } else {
+          navigate('/mentordashboard');
+        }
+      } 
     } catch (error) {
       console.error('Login error:', error);
     }
   };
-
   const backgroundImage = 'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 
   return (
@@ -134,20 +129,7 @@ export default function Login() {
                   fullWidth
                   margin="normal"
                 />
-                <FormControl variant="filled" fullWidth margin="normal" required>
-                  <InputLabel id="role-label">Role</InputLabel>
-                  <Select
-                    labelId="role-label"
-                    id="role"
-                    name="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                  >
-                    <MenuItem value="admin">Admin</MenuItem>
-                    <MenuItem value="mentor">Mentor</MenuItem>
-                  </Select>
-                </FormControl>
-                <Button
+                                <Button
                   type="submit"
                   variant="contained"
                   color="primary"
