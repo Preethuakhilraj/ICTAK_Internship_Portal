@@ -17,7 +17,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import axiosInstance from '../axiosinterceptor';
 import './Mentordashboard.css';
 
-const drawerWidth = 240;
+const drawerWidth = 278;
 
 const theme = createTheme({
   typography: {
@@ -122,12 +122,12 @@ export default function ClippedDrawer() {
                   <ListItemText primary="Dashboard" />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              {/* <ListItem disablePadding>
                 <ListItemButton
                   component={Link}
                   to="/reference-materials"
                   sx={{
-                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
+                    color: 'rgba(0, 0, 0, 0.87)', 
                   }}
                 >
                   <ListItemIcon>
@@ -135,17 +135,17 @@ export default function ClippedDrawer() {
                   </ListItemIcon>
                   <ListItemText primary="Reference Materials" />
                 </ListItemButton>
-              </ListItem>
+              </ListItem> */}
             </List>
             <Divider />
           </Box>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 0, marginTop:'-60px ', width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden' }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 0, marginTop:'60px ', width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden' }}>
           <Toolbar />
           <Typography className="project-head" sx={{ paddingLeft: 4 }}>
             <h6>Topic:</h6>
           </Typography>
-          <Typography sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: -2, paddingLeft: 4 }}>
+          <Typography sx={{ display: 'flex', justifyContent: 'flex-start', margin: '2% 0%', paddingLeft: 4 }}>
             {submission?.projectTopic}
           </Typography>
           <div style={{ position: 'relative', marginLeft: 30, }}>
@@ -179,7 +179,7 @@ export default function ClippedDrawer() {
                   onChange={(e) => setMarks(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={8} md={8} sm={8}>
+              <Grid item xs={8} md={8} sm={8} lg={7.6}>
                 <TextField
                   required
                   fullWidth

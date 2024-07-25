@@ -18,7 +18,7 @@ import { Dashboard, LibraryBooks } from '@mui/icons-material';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 
-const drawerWidth = 240;
+const drawerWidth = 267;
 
 const theme = createTheme({
   typography: {
@@ -34,7 +34,7 @@ const ReferenceMaterial = () => {
 
   const fetchMaterials = async () => {
     try {
-      const response = await axiosInstance.get('/reference/'); // Adjust the endpoint as necessary
+      const response = await axiosInstance.get('/reference/'); 
       setMaterials(response.data);
       setLoading(false);
     } catch (error) {
@@ -85,7 +85,7 @@ const ReferenceMaterial = () => {
                   component={Link}
                   to="/mentordashboard"
                   sx={{
-                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
+                    color: 'rgba(0, 0, 0, 0.87)', 
                   }}
                 >
                   <ListItemIcon>
@@ -99,7 +99,7 @@ const ReferenceMaterial = () => {
                   component={Link}
                   to="/reference-materials"
                   sx={{
-                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
+                    color: 'rgba(0, 0, 0, 0.87)', 
                   }}
                 >
                   <ListItemIcon>
@@ -112,7 +112,7 @@ const ReferenceMaterial = () => {
             <Divider />
           </Box>
         </Drawer>
-    <Box p={2} sx={{ marginTop: '-50px'}}>
+    <Box p={2} sx={{ marginTop: '5%'}}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
         <Box display="flex" justifyContent="flex-end" mb={2}>

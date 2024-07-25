@@ -1,7 +1,7 @@
 /* General styles for the container */
 .container {
     position: relative;
-    width: 100%;
+    width: 99%;  
     height: 300px; /* Adjust the height of the container as needed */
     overflow: hidden;
     margin: 20px 0; /* Adjust the margins as needed */
@@ -44,12 +44,14 @@
   
   /* Styles for the profile image */
   .profile-image {
-    border: 0.5rem solid #fff;
-    border-radius: 1.25rem;
-    height: 150px;
-    width: 150px;
+    border: 0.2rem solid #fff;
+    border-radius: 5.25rem;
+    height: 135px;
+    width: 135px;
     
   }
+
+  
   
   /* Positioning for the profile picture */
   .profile-pic {
@@ -82,8 +84,8 @@
     align-self: flex-end;
     margin-left: auto;
     padding: 8px 16px;
-    background-color: #024acf;
-    color: #fff;
+    background-color: #035dc4;
+    color: #fbfbfb;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -92,7 +94,7 @@
   }
   
   .update-profile-button:hover {
-    background-color: #019be9;
+    background-color: #61b9e4;
   }
   
   /* Project heading styles */
@@ -170,3 +172,6 @@
   display: flex;
 }
 
+/* #outlined-basics{
+  width: 60%;
+} */
