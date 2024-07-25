@@ -412,7 +412,7 @@ import {
   AccordionDetails,
 } from '@mui/material';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import axiosInstance from './axiosinterceptor';
+import axiosInstance from '../axiosinterceptor';
 import AddIcon from '@mui/icons-material/Add';
 
 const drawerWidth = 278;
@@ -591,15 +591,26 @@ const Submissions = () => {
   console.log('Submissions:', submissions);
   console.log('Materials:', materials);
 
+  // const filteredMaterials = materials.filter((material) => {
+  //   const matches = submissions.some((submission) => {
+  //     const submissionTopic = submission.projectTopic.trim().toLowerCase();
+  //     const materialTopic = material.topic.trim().toLowerCase();
+  //     console.log(`Comparing: ${submissionTopic} with ${materialTopic}`);
+  //     return submissionTopic === materialTopic;
+  //   });
+  //   return matches;
+  // });
+
   const filteredMaterials = materials.filter((material) => {
     const matches = submissions.some((submission) => {
-      const submissionTopic = submission.projectTopic.trim().toLowerCase();
-      const materialTopic = material.topic.trim().toLowerCase();
+      const submissionTopic = submission.projectTopic ? submission.projectTopic.trim().toLowerCase() : '';
+      const materialTopic = material.topic ? material.topic.trim().toLowerCase() : '';
       console.log(`Comparing: ${submissionTopic} with ${materialTopic}`);
       return submissionTopic === materialTopic;
     });
     return matches;
   });
+  
 
   console.log('Filtered Materials:', filteredMaterials);
 
@@ -618,7 +629,7 @@ const Submissions = () => {
         >
           <Toolbar />
           <Box sx={{ overflow: 'auto' }}>
-            <Link to={'/'}>
+            <Link to={'/mentordashboard'}>
               <List>
                 {['Dashboard'].map((text) => (
                   <ListItem key={text} disablePadding>
