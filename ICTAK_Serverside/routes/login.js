@@ -11,10 +11,18 @@ router.post('/', async (req, res) => {
     const user = await usermodel.findOne({ email: req.body.email });
     console.log("USER:", user);
 
-    if (!user || password !== req.body.password) {
+    // if (!user || password !== req.body.password) {
+    //   return res.status(401).json({ message: 'Invalid credentials' });
+    // }
+    if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // Compare the provided password with the stored hashed password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
     const token = jwt.sign({ userId: user._id, role: user.role }, '111', { expiresIn: '1h' });
     console.log(token);
 
