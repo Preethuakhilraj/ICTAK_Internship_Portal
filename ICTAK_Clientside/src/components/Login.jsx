@@ -19,7 +19,7 @@ export default function Login() {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
         if (user.email === 'ictak@example.com') {
-          navigate('/admindashboard');
+          navigate('/admin');
         } else {
           navigate('/mentordashboard');
         }
