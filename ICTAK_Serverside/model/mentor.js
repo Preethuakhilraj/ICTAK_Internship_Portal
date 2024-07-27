@@ -22,10 +22,11 @@ const mentorSchema = new Schema({
     required: true
   },
 
-  projectTopic: {
-    type: [String], // Changed to an array of strings
-    required: true
-  }
+  // projectTopic: {
+  //   type: [String], // Changed to an array of strings
+  //   required: true
+  // }
+  projectTopics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project' }],
 });
 
 // Pre-save middleware to hash the password before saving
