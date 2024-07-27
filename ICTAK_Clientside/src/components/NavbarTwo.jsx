@@ -13,7 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Dashboard, Logout } from '@mui/icons-material';
 import { Button, Card, CardContent, CardMedia } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -83,7 +83,7 @@ function ClippedDrawer() {
             }}
             onClick={()=>{
               localStorage.removeItem('token');
-              navigate('/');
+              Navigate('/');
                             }}
           >
             <ListItemIcon sx={{ minWidth: 'auto', marginRight: '4px', color: 'inherit' }}>
