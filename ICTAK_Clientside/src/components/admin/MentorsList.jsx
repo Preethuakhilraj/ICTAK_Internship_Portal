@@ -1,4 +1,3 @@
-//import React from 'react'
 import Drawer from '@mui/material/Drawer';
 import {
   Autocomplete,
@@ -25,7 +24,6 @@ import {
   TextField,
   Toolbar,
 } from '@mui/material';
-
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
@@ -37,18 +35,16 @@ import axiosInstance from '../axiosinterceptor';
 const drawerWidth = 240;
 
 const MentorsList = () => {
-  const [topics, setTopics] = useState([]);
-  
+  const [topics, setTopics] = useState([]); // State to hold topics
   const [data, setData] = useState([]);
   const [newMentor, setNewMentor] = useState({
     name: '',
     email: '',
     phone: '',
     password: '',
-    projectTopics: []
+    projectTopics: [],
   });
   const [openAdd, setOpenAdd] = useState(false);
-
   const [updateMentor, setMentorUpdate] = useState(null);
   const [openUpdate, setOpenUpdate] = useState(false);
 
@@ -57,67 +53,55 @@ const MentorsList = () => {
     axiosInstance
       .get('/admin/mentorslist')
       .then((res) => {
-        //console.log(res.data);
         setData(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error('Error fetching mentors:', error);
       });
 
-    // Fetch the list of project topics
+    // Fetch the list of projects and extract topics
     axiosInstance
       .get('/admin/projectslist')
       .then((res) => {
-        setTopics(res.data); // Assuming the response is an array of project topics
+        const projects = res.data;
+        // Extract unique topics from projects
+        const uniqueTopics = [
+          ...new Set(projects.map((project) => project.topic)),
+        ];
+        // Create objects with topic title and ID (using index as _id for simplicity)
+        const topicsData = uniqueTopics.map((topic, index) => ({
+          _id: index.toString(), // Generate a unique ID for each topic
+          topic,
+        }));
+        setTopics(topicsData);
       })
       .catch((error) => {
-        console.error('Error fetching topics:', error);
+        console.error('Error fetching projects:', error);
       });
   }, []);
 
- useEffect(() => {
-   const fetchData = async () => {
-     try {
-       const [mentorsRes, topicsRes] = await Promise.all([
-         axiosInstance.get('/admin/mentorslist'),
-         axiosInstance.get('/admin/projectslist'),
-       ]);
-       setData(mentorsRes.data);
-       setTopics(topicsRes.data);
-     } catch (error) {
-       console.error('Error fetching data:', error);
-     }
-   };
-   fetchData();
- }, []);
-
-
-  //add Mentor details
-  const handleOpenAddDialog = () => {
-    setOpenAdd(true);
-  };
-
+  const handleOpenAddDialog = () => setOpenAdd(true);
   const handleCloseAddDialog = () => {
     setNewMentor({
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    projectTopic: []
+      name: '',
+      email: '',
+      phone: '',
+      password: '',
+      projectTopics: [],
     });
     setOpenAdd(false);
   };
 
-  // const handleAddInputChange = (e, value) => {
-  //   const { name } = e.target;
-  //   setNewMentor({ ...newMentor, [name]: value });
-  // };
   const handleAddInputChange = (e) => {
     const { name, value } = e.target;
-    setNewMentor((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setNewMentor({ ...newMentor, [name]: value });
+  };
+
+  const handleAutocompleteChange = (event, newValue) => {
+    setNewMentor({
+      ...newMentor,
+      projectTopics: newValue.map((topic) => topic.topic), // Store topics directly as strings
+    });
   };
 
   const handleAdd = async () => {
@@ -131,11 +115,9 @@ const MentorsList = () => {
       alert('Please fill in all fields.');
       return;
     }
+
     try {
-      const response = await axiosInstance.post(
-        '/admin/addmentor',
-        newMentor
-      );
+      const response = await axiosInstance.post('/admin/addmentor', newMentor);
       setData([...data, response.data]);
       handleCloseAddDialog();
     } catch (error) {
@@ -143,7 +125,6 @@ const MentorsList = () => {
     }
   };
 
-  // mentor data update operations
   const handleOpenUpdateDialog = (mentor) => {
     setMentorUpdate(mentor);
     setOpenUpdate(true);
@@ -154,19 +135,17 @@ const MentorsList = () => {
     setOpenUpdate(false);
   };
 
-  // const handleUpdateInputChange = (e, value) => {
-  //   const { name } = e.target;
-  //   setMentorUpdate({ ...updateMentor, [name]: value });
-  // };
-
   const handleUpdateInputChange = (e) => {
     const { name, value } = e.target;
-    setMentorUpdate((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setMentorUpdate({ ...updateMentor, [name]: value });
   };
 
+  const handleUpdateAutocompleteChange = (event, newValue) => {
+    setMentorUpdate({
+      ...updateMentor,
+      projectTopics: newValue.map((topic) => topic.topic), // Store topics directly as strings
+    });
+  };
 
   const handleUpdate = async () => {
     try {
@@ -176,22 +155,16 @@ const MentorsList = () => {
       );
       const res = await axiosInstance.get('/admin/mentorslist');
       setData(res.data);
-      // setData(
-      //   data.map((mentor) =>
-      //     mentor._id === updateMentor._id ? updateMentor : mentor
-      //   )
-      // );
       handleCloseUpdateDialog();
     } catch (error) {
-      console.error('Error updating Mentors:', error);
+      console.error('Error updating Mentor:', error);
     }
   };
 
-  //deleting Mentor details
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-    'Are you sure you want to delete this Mentor?'
-  );
+      'Are you sure you want to delete this Mentor?'
+    );
     if (confirmDelete) {
       try {
         await axiosInstance.delete(`/admin/deletementor/${id}`);
@@ -201,14 +174,6 @@ const MentorsList = () => {
       }
     }
   };
-
-
-  // const [projectTopic] = useState([
-  //   'Python Full Stack Development', 
-  //   'ReactJS Development', 
-  //   'Node.js API Development'
-
-  // ]);
 
 
   return (
@@ -270,7 +235,6 @@ const MentorsList = () => {
       </Drawer>
 
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: '65px' }}>
-        {/* add codes */}
         <Box display="flex" justifyContent="flex-end" mb={2}>
           <Button
             variant="contained"
@@ -281,26 +245,19 @@ const MentorsList = () => {
           </Button>
         </Box>
 
-        {/* add tables to show the mentor list  */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold' }}>Mentors</TableCell>
-                {/* <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-                  Name
-                </TableCell> */}
                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Email
                 </TableCell>
                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Phone
                 </TableCell>
-                {/* <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-                  Password
-                </TableCell> */}
                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-                  ProjectTopics
+                  Project Topics
                 </TableCell>
                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Actions
@@ -318,643 +275,158 @@ const MentorsList = () => {
                   </TableCell>
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="left">{row.phone}</TableCell>
-                  {/* <TableCell align="left">{row.password}</TableCell> */}
 
-                  <TableCell align="left">{row.projectTopic}</TableCell>
-                  {/* <TableCell align="left">
-                    {row.projectTopics
-                      .map((topicId) => {
-                        const topic = topics.find((t) => t._id === topicId);
-                        return topic ? topic.topic : null;
-                      })
-                      .join(', ')}
-                  </TableCell> */}
-
-                  {/* <TableCell>
-                    {row.projectTopics
-                      .map(
-                        (topicId) =>
-                          topics.find((topic) => topic.id === topicId)
-                            ?.topic || 'Unknown'
-                      )
-                      .join(', ')}
-                  </TableCell> */}
                   <TableCell align="left">
-                    {/* icons for update and delete */}
+                    {row.projectTopics.join(', ')}{' '}
+                    {/* Directly display topics */}
+                  </TableCell>
+                  <TableCell align="left">
                     <IconButton onClick={() => handleOpenUpdateDialog(row)}>
                       <EditIcon color="primary" />
                     </IconButton>
-
                     <IconButton onClick={() => handleDelete(row._id)}>
-                      <DeleteIcon color="primary" />
+                      <DeleteIcon style={{ color: 'red' }} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+
+          {/* Add Mentor Dialog */}
+          <Dialog open={openAdd} onClose={handleCloseAddDialog}>
+            <DialogTitle>Add Mentor</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                name="name"
+                label="Name"
+                fullWidth
+                variant="standard"
+                value={newMentor.name}
+                onChange={handleAddInputChange}
+              />
+              <TextField
+                margin="dense"
+                name="email"
+                label="Email"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={newMentor.email}
+                onChange={handleAddInputChange}
+              />
+              <TextField
+                margin="dense"
+                name="phone"
+                label="Phone"
+                type="tel"
+                fullWidth
+                variant="standard"
+                value={newMentor.phone}
+                onChange={handleAddInputChange}
+              />
+              <TextField
+                margin="dense"
+                name="password"
+                label="Password"
+                type="password"
+                fullWidth
+                variant="standard"
+                value={newMentor.password}
+                onChange={handleAddInputChange}
+              />
+              <Autocomplete
+                multiple
+                options={topics}
+                getOptionLabel={(option) => option.topic}
+                onChange={handleAutocompleteChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Project Topics"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseAddDialog}>Cancel</Button>
+              <Button onClick={handleAdd}>Add</Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* Update Mentor Dialog */}
+          <Dialog open={openUpdate} onClose={handleCloseUpdateDialog}>
+            <DialogTitle>Update Mentor</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                name="name"
+                label="Name"
+                fullWidth
+                variant="standard"
+                value={updateMentor?.name || ''}
+                onChange={handleUpdateInputChange}
+              />
+              <TextField
+                margin="dense"
+                name="email"
+                label="Email"
+                type="email"
+                fullWidth
+                variant="standard"
+                value={updateMentor?.email || ''}
+                onChange={handleUpdateInputChange}
+              />
+              <TextField
+                margin="dense"
+                name="phone"
+                label="Phone"
+                type="tel"
+                fullWidth
+                variant="standard"
+                value={updateMentor?.phone || ''}
+                onChange={handleUpdateInputChange}
+              />
+              <TextField
+                margin="dense"
+                name="password"
+                label="Password"
+                type="password"
+                fullWidth
+                variant="standard"
+                value={updateMentor?.password || ''}
+                onChange={handleUpdateInputChange}
+              />
+              <Autocomplete
+                multiple
+                options={topics}
+                getOptionLabel={(option) => option.topic}
+                value={topics.filter((topic) =>
+                  updateMentor?.projectTopics.includes(topic.topic)
+                )}
+                onChange={handleUpdateAutocompleteChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Project Topics"
+                    variant="standard"
+                  />
+                )}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseUpdateDialog}>Cancel</Button>
+              <Button onClick={handleUpdate}>Update</Button>
+            </DialogActions>
+          </Dialog>
         </TableContainer>
-
-        {/* dialog box for adding mentor */}
-        <Dialog open={openAdd} onClose={handleCloseAddDialog}>
-          <DialogTitle> Add Mentor</DialogTitle>
-          <DialogContent>
-            <TextField
-              margin="dense"
-              name="name"
-              label="Name"
-              type="text"
-              fullWidth
-              value={newMentor.name}
-              onChange={handleAddInputChange}
-            />
-            <TextField
-              margin="dense"
-              name="email"
-              label="Email"
-              type="text"
-              fullWidth
-              value={newMentor.email}
-              onChange={handleAddInputChange}
-            />
-            <TextField
-              margin="dense"
-              name="phone"
-              label="Phone"
-              type="number"
-              fullWidth
-              value={newMentor.phone}
-              onChange={handleAddInputChange}
-            />
-            <TextField
-              margin="dense"
-              name="password"
-              label="Password"
-              type="text"
-              fullWidth
-              value={newMentor.password}
-              onChange={handleAddInputChange}
-            />
-            {/* <TextField
-              margin="dense"
-              name="projecttopic"
-              label="projectTopic"
-              type="text"
-              fullWidth
-              value={newMentor.projectTopic}
-              onChange={handleAddInputChange}
-            /> */}
-
-            {/* <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              options={stack}
-              sx={{ width: 550, marginTop: 1 }}
-              value={newMentor.projectTopic}
-              onChange={handleAddInputChange}
-              renderInput={(params) => (
-                <TextField {...params} label="Project topic" />
-              )}
-            /> */}
-            <Autocomplete
-              multiple
-              disablePortal
-              id="project-topic-select"
-              options={topics}
-              getOptionLabel={(option) => option.topic}
-              value={topics.filter((topic) =>
-                newMentor.projectTopics.includes(topic._id)
-              )}
-              onChange={(event, newValue) => {
-                setNewMentor({
-                  ...newMentor,
-                  projectTopics: newValue.map((topic) => topic.id),
-                });
-              }}
-              renderInput={(params) => (
-                <TextField {...params} label="Project Topics" />
-              )}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseAddDialog} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleAdd} color="primary">
-              Add
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* dialog box for updating  */}
-        <Dialog open={openUpdate} onClose={handleCloseUpdateDialog}>
-          <DialogTitle>Edit Mentor</DialogTitle>
-          <DialogContent>
-            <TextField
-              margin="dense"
-              name="name"
-              label="Name"
-              type="text"
-              fullWidth
-              value={updateMentor?.name || ''}
-              onChange={handleUpdateInputChange}
-            />
-            <TextField
-              margin="dense"
-              name="email"
-              label="Email"
-              type="text"
-              fullWidth
-              value={updateMentor?.email || ''}
-              onChange={handleUpdateInputChange}
-            />
-            <TextField
-              margin="dense"
-              name="phone"
-              label="Phone"
-              type="text"
-              fullWidth
-              value={updateMentor?.phone || ''}
-              onChange={handleUpdateInputChange}
-            />
-            <TextField
-              margin="dense"
-              name="password"
-              label="Password"
-              type="text"
-              fullWidth
-              value={updateMentor?.password || ''}
-              onChange={handleUpdateInputChange}
-            />
-            {/* <TextField
-              margin="dense"
-              name="projecttopic"
-              label="projectTopic"
-              type="text"
-              fullWidth
-              value={updateMentor?.projecttopic || ''}
-              onChange={handleUpdateInputChange}
-            /> */}
-            <Autocomplete
-              multiple
-              disablePortal
-              id="project-topic-select-update"
-              options={topics}
-              getOptionLabel={(option) => option.topic}
-              value={topics.filter((topic) =>
-                updateMentor?.projectTopics.includes(topic._id)
-              )}
-              onChange={(event, newValue) => {
-                setMentorUpdate({
-                  ...updateMentor,
-                  projectTopics: newValue.map((topic) => topic._id),
-                });
-              }}
-              renderInput={(params) => (
-                <TextField {...params} label="Project Topics" />
-              )}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseUpdateDialog} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleUpdate} color="primary">
-              Update
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Box>
     </Box>
   );
 };
 
 export default MentorsList;
-
-
-
-// import React from 'react'
-// import Drawer from '@mui/material/Drawer';
-// import {
-//   Autocomplete,
-//   Box,
-//   Button,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   Divider,
-//   IconButton,
-//   List,
-//   ListItem,
-//   ListItemButton,
-//   ListItemIcon,
-//   ListItemText,
-//   Paper,
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-//   TextField,
-//   Toolbar,
-// } from '@mui/material';
-
-// import EditIcon from '@mui/icons-material/Edit';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import { Link } from 'react-router-dom';
-// import { Dashboard } from '@mui/icons-material';
-// import PersonIcon from '@mui/icons-material/Person';
-// import { useEffect, useState } from 'react';
-// import axiosInstance from '../axiosinterceptor';
-
-// const drawerWidth = 240;
-
-// const MentorsList = () => {
-//   const [data, setData] = useState([]);
-//   const [newMentor, setNewMentor] = useState({
-//     name: '',
-//     email: '',
-//     phone: '',
-//     password: '',
-//     projectTopic: [],
-//   });
-//   const [openAdd, setOpenAdd] = useState(false);
-
-//   const [updateMentor, setMentorUpdate] = useState(null);
-//   const [openUpdate, setOpenUpdate] = useState(false);
-
-//   useEffect(() => {
-//     axiosInstance
-//       .get('/admin/mentorslist')
-//       .then((res) => {
-//         //console.log(res.data);
-//         setData(res.data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-    
-//   }, []);
-
-//   //add Mentor details
-//   const handleOpenAddDialog = () => {
-//     setOpenAdd(true);
-//   };
-
-//   const handleCloseAddDialog = () => {
-//     setNewMentor({
-//     name: '',
-//     email: '',
-//     phone: '',
-//     password: '',
-//     projectTopic: '',
-//     });
-//     setOpenAdd(false);
-//   };
-
-//   const handleAddInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setNewMentor({ ...newMentor, [name]: value });
-//   };
-
-//   const handleAdd = async () => {
-//     if (!newMentor.name || !newMentor.email || !newMentor.phone || !newMentor.password || !newMentor.projectTopic) {
-//       // alert('Please fill in all fields.');
-//       return;
-//     }
-//     try {
-//       const response = await axiosInstance.post(
-//         '/admin/addmentors',
-//         newMentor
-//       );
-//       setData([...data, response.data]);
-//       handleCloseAddDialog();
-//     } catch (error) {
-//       console.error('Error adding Mentor:', error);
-//     }
-//   };
-
-//   // mentor data update operations
-//   const handleOpenUpdateDialog = (mentor) => {
-//     setMentorUpdate(mentor);
-//     setOpenUpdate(true);
-//   };
-
-//   const handleCloseUpdateDialog = () => {
-//     setMentorUpdate(null);
-//     setOpenUpdate(false);
-//   };
-
-//   const handleUpdateInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setMentorUpdate({ ...updateMentor, [name]: value });
-//   };
-
-//   const handleUpdate = async () => {
-//     try {
-//       await axiosInstance.patch(
-//         `/admin/updateMentor/${updateMentor._id}`,
-//         updateMentor
-//       );
-//       setData(
-//         data.map((mentor) =>
-//           mentor._id === updateMentor._id ? updateMentor : mentor
-//         )
-//       );
-//       handleCloseUpdateDialog();
-//     } catch (error) {
-//       console.error('Error updating Mentors:', error);
-//     }
-//   };
-
-//   //deleting Mentor details
-//   const handleDelete = async (id) => {
-//     const confirmDelete = window.confirm(
-//     'Are you sure you want to delete this Mentor?'
-//   );
-//     if (confirmDelete) {
-//       try {
-//         await axiosInstance.delete(`/admin/deletementor/${id}`);
-//         setData(data.filter((mentor) => mentor._id !== id));
-//       } catch (error) {
-//         console.error('Error deleting mentor:', error);
-//       }
-//     }
-//   };
-
-
-//   const [projectTopic] = useState([
-//     // 'Python Full Stack Development', 
-//     // 'ReactJS Development', 
-//     // 'Node.js API Development'
-    
-//   ]);
-
-
-
-
-//   return (
-//     <Box
-//       sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f5f5f5' }}
-//     >
-//       <Drawer
-//         variant="permanent"
-//         sx={{
-//           width: drawerWidth,
-//           flexShrink: 0,
-//           [`& .MuiDrawer-paper`]: {
-//             width: drawerWidth,
-//             boxSizing: 'border-box',
-//           },
-//           backgroundColor: '#fff',
-//         }}
-//       >
-//         <Toolbar />
-//         <Box sx={{ overflow: 'auto' }}>
-//           <Link to={'/admin'}>
-//             <List>
-//               {['Dashboard'].map((text) => (
-//                 <ListItem key={text} disablePadding>
-//                   <ListItemButton
-//                     sx={{
-//                       color: 'rgba(0, 0, 0, 0.87)', // Default text color
-//                     }}
-//                   >
-//                     <ListItemIcon>
-//                       <Dashboard />
-//                     </ListItemIcon>
-//                     <ListItemText primary={text} />
-//                   </ListItemButton>
-//                 </ListItem>
-//               ))}
-//             </List>
-//           </Link>
-
-//           <Link to={'/admin/mentorslist/'}>
-//             <List>
-//               {['Mentors'].map((text) => (
-//                 <ListItem key={text} disablePadding>
-//                   <ListItemButton
-//                     sx={{
-//                       color: 'rgba(0, 0, 0, 0.87)', // Default text color
-//                     }}
-//                   >
-//                     <ListItemIcon>{<PersonIcon />}</ListItemIcon>
-//                     <ListItemText primary={text} />
-//                   </ListItemButton>
-//                 </ListItem>
-//               ))}
-//             </List>
-//           </Link>
-
-//           <Divider />
-//         </Box>
-//       </Drawer>
-
-//       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: '65px' }}>
-//         {/* add codes */}
-//         <Box display="flex" justifyContent="flex-end" mb={2}>
-//           <Button
-//             variant="contained"
-//             color="primary"
-//             onClick={handleOpenAddDialog}
-//           >
-//             + Add Mentor
-//           </Button>
-//         </Box>
-
-//  {/* add tables to show the mentor list  */}
-//  <TableContainer component={Paper}>
-//           <Table sx={{ minWidth: 650 }} aria-label="simple table">
-//             <TableHead>
-//               <TableRow>
-//                 <TableCell sx={{ fontWeight: 'bold' }}>Mentors</TableCell>
-//                 {/* <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-//                   Name
-//                 </TableCell> */}
-//                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-//                   Email
-//                 </TableCell>
-//                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-//                   Phone
-//                 </TableCell>
-//                 {/* <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-//                   Password
-//                 </TableCell> */}
-//                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-//                   ProjectTopic
-//                 </TableCell>
-//                 <TableCell align="left" sx={{ fontWeight: 'bold' }}>
-//                   Actions
-//                 </TableCell>
-//               </TableRow>
-//             </TableHead>
-//             <TableBody>
-//               {data.map((row) => (
-//                 <TableRow
-//                   key={row._id}
-//                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-//                 >
-//                   <TableCell component="th" scope="row">
-//                     {row.name}
-//                   </TableCell>
-//                   <TableCell align="left">{row.email}</TableCell>
-//                   <TableCell align="left">{row.phone}</TableCell>
-//                   {/* <TableCell align="left">{row.password}</TableCell> */}
-//                   <TableCell align="left">{row.projectTopic}</TableCell>
-                
-//                   <TableCell align="left">
-//                     {/* icons for update and delete */}
-//                     <IconButton onClick={() => handleOpenUpdateDialog(row)}>
-//                       <EditIcon color="primary" />
-//                     </IconButton>
-
-//                     <IconButton onClick={() => handleDelete(row._id)}>
-//                       <DeleteIcon color="primary" />
-//                     </IconButton>
-//                   </TableCell>
-//                 </TableRow>
-//               ))}
-//             </TableBody>
-//           </Table>
-//         </TableContainer>
-
-//         {/* dialog box for adding mentor */}
-//         <Dialog open={openAdd} onClose={handleCloseAddDialog}>
-//           <DialogTitle> Add Mentor</DialogTitle>
-//           <DialogContent>
-//             <TextField
-//               margin="dense"
-//               name="name"
-//               label="Name"
-//               type="text"
-//               fullWidth
-//               value={newMentor.name}
-//               onChange={handleAddInputChange}
-//             />
-//             <TextField
-//               margin="dense"
-//               name="email"
-//               label="Email"
-//               type="text"
-//               fullWidth
-//               value={newMentor.email}
-//               onChange={handleAddInputChange}
-//             />
-//             <TextField
-//               margin="dense"
-//               name="phone"
-//               label="Phone"
-//               type="number"
-//               fullWidth
-//               value={newMentor.phone}
-//               onChange={handleAddInputChange}
-//             />
-//               <TextField
-//               margin="dense"
-//               name="password"
-//               label="Password"
-//               type="text"
-//               fullWidth
-//               value={newMentor.password}
-//               onChange={handleAddInputChange}
-//             />
-//               {/* <TextField
-//               margin="dense"
-//               name="projecttopic"
-//               label="projectTopic"
-//               type="text"
-//               fullWidth
-//               value={newMentor.projectTopic}
-//               onChange={handleAddInputChange}
-//             /> */}
-//               <Autocomplete
-//       disablePortal
-//       id="combo-box-demo"
-//       options={stack}
-//       sx={{ width: 550, marginTop: 1 }}
-//       value={newMentor.projectTopic}
-//       onChange={handleAddInputChange}
-//       renderInput={(params) => <TextField {...params} label="Project topic" />}
-//     />
-//           </DialogContent>
-//           <DialogActions>
-//             <Button onClick={handleCloseAddDialog} color="primary">
-//               Cancel
-//             </Button>
-//             <Button onClick={handleAdd} color="primary">
-//               Add
-//             </Button>
-//           </DialogActions>
-//         </Dialog>
-
-//         {/* dialog box for updating  */}
-//         <Dialog open={openUpdate} onClose={handleCloseUpdateDialog}>
-//           <DialogTitle>Edit Mentor</DialogTitle>
-//           <DialogContent>
-//             <TextField
-//               margin="dense"
-//               name="name"
-//               label="Name"
-//               type="text"
-//               fullWidth
-//               value={updateMentor?.name || ''}
-//               onChange={handleUpdateInputChange}
-//             />
-//               <TextField
-//               margin="dense"
-//               name="email"
-//               label="Email"
-//               type="text"
-//               fullWidth
-//               value={updateMentor?.email || ''}
-//               onChange={handleUpdateInputChange}
-//             />
-//              <TextField
-//               margin="dense"
-//               name="phone"
-//               label="Phone"
-//               type="text"
-//               fullWidth
-//               value={updateMentor?.phone || ''}
-//               onChange={handleUpdateInputChange}
-//             /> 
-//              <TextField
-//             margin="dense"
-//             name="password"
-//             label="Password"
-//             type="text"
-//             fullWidth
-//             value={updateMentor?.password || ''}
-//             onChange={handleUpdateInputChange}
-//           />
-//             <TextField
-//               margin="dense"
-//               name="projecttopic"
-//               label="projectTopic"
-//               type="text"
-//               fullWidth
-//               value={updateMentor?.projecttopic || ''}
-//               onChange={handleUpdateInputChange}
-//             />
-//           </DialogContent>
-//           <DialogActions>
-//             <Button onClick={handleCloseUpdateDialog} color="primary">
-//               Cancel
-//             </Button>
-//             <Button onClick={handleUpdate} color="primary">
-//               Update
-//             </Button>
-//           </DialogActions>
-//         </Dialog>
-
-
-
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default MentorsList;
