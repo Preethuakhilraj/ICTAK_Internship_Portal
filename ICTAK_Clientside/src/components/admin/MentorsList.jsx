@@ -1,21 +1,38 @@
 //import React from 'react'
 import Drawer from '@mui/material/Drawer';
 import {
+  Autocomplete,
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
   Toolbar,
 } from '@mui/material';
 
-// import EditIcon from '@mui/icons-material/Edit';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { Dashboard } from '@mui/icons-material';
 import PersonIcon from '@mui/icons-material/Person';
+import { useEffect, useState } from 'react';
+import axiosInstance from '../axiosinterceptor';
 
 const drawerWidth = 240;
 
@@ -68,7 +85,7 @@ const MentorsList = () => {
 
   const handleAdd = async () => {
     if (!newMentor.name || !newMentor.email || !newMentor.phone || !newMentor.password || !newMentor.projectTopic) {
-      alert('Please fill in all fields.');
+      // alert('Please fill in all fields.');
       return;
     }
     try {
@@ -84,7 +101,7 @@ const MentorsList = () => {
   };
 
   // mentor data update operations
-  const handleOpenUpdateDialog = (mentors) => {
+  const handleOpenUpdateDialog = (mentor) => {
     setMentorUpdate(mentor);
     setOpenUpdate(true);
   };
@@ -132,7 +149,12 @@ const MentorsList = () => {
   };
 
 
-
+  const [projectTopic] = useState([
+    // 'Python Full Stack Development', 
+    // 'ReactJS Development', 
+    // 'Node.js API Development'
+    
+  ]);
 
 
 
@@ -213,20 +235,23 @@ const MentorsList = () => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold' }}>Mentors</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                {/* <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Name
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                </TableCell> */}
+                <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Email
                 </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Phone
                 </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                {/* <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   Password
-                </TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                </TableCell> */}
+                <TableCell align="left" sx={{ fontWeight: 'bold' }}>
                   ProjectTopic
+                </TableCell>
+                <TableCell align="left" sx={{ fontWeight: 'bold' }}>
+                  Actions
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -239,11 +264,12 @@ const MentorsList = () => {
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell align="right">{row.email}</TableCell>
-                  <TableCell align="right">{row.phone}</TableCell>
-                  <TableCell align="right">{row.password}</TableCell>
-                  <TableCell align="right">{row.projectTopic}</TableCell>
-                  <TableCell align="right">
+                  <TableCell align="left">{row.email}</TableCell>
+                  <TableCell align="left">{row.phone}</TableCell>
+                  {/* <TableCell align="left">{row.password}</TableCell> */}
+                  <TableCell align="left">{row.projectTopic}</TableCell>
+                
+                  <TableCell align="left">
                     {/* icons for update and delete */}
                     <IconButton onClick={() => handleOpenUpdateDialog(row)}>
                       <EditIcon color="primary" />
@@ -278,7 +304,7 @@ const MentorsList = () => {
               label="Email"
               type="text"
               fullWidth
-              value={newMentor.name}
+              value={newMentor.email}
               onChange={handleAddInputChange}
             />
             <TextField
@@ -299,7 +325,7 @@ const MentorsList = () => {
               value={newMentor.password}
               onChange={handleAddInputChange}
             />
-              <TextField
+              {/* <TextField
               margin="dense"
               name="projecttopic"
               label="projectTopic"
@@ -307,7 +333,16 @@ const MentorsList = () => {
               fullWidth
               value={newMentor.projectTopic}
               onChange={handleAddInputChange}
-            />
+            /> */}
+              <Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={stack}
+      sx={{ width: 550, marginTop: 1 }}
+      value={newMentor.projectTopic}
+      onChange={handleAddInputChange}
+      renderInput={(params) => <TextField {...params} label="Project topic" />}
+    />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseAddDialog} color="primary">
