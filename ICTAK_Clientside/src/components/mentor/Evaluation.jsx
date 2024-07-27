@@ -12,12 +12,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Dashboard } from '@mui/icons-material';
+import { Dashboard, LibraryBooks } from '@mui/icons-material';
 import { Button, Grid, TextField } from '@mui/material';
 import axiosInstance from '../axiosinterceptor';
 import './Mentordashboard.css';
 
-const drawerWidth = 278;
+const drawerWidth = 240;
 
 const theme = createTheme({
   typography: {
@@ -40,18 +40,22 @@ export default function ClippedDrawer() {
   const [submission, setSubmission] = useState(null);
   const [marks, setMarks] = useState('');
   const [comments, setComments] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
         const response = await axiosInstance.get(`/submission/get/${id}`);
-        console.log("Submission by id:", response);
         setSubmission(response.data);
         setMarks(response.data.marks || '');
         setComments(response.data.comments || '');
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching submission:', error);
+        setError(error);
+        setLoading(false);
       }
     };
 
@@ -62,6 +66,7 @@ export default function ClippedDrawer() {
     e.preventDefault();
     try {
       let response;
+      // Assuming submission.evaluationStatus determines if it's already evaluated
       if (submission.evaluationStatus === true) {
         // Update existing evaluation
         response = await axiosInstance.put(`/submission/${id}`, {
@@ -78,11 +83,14 @@ export default function ClippedDrawer() {
         console.log('Submission evaluated:', response.data);
       }
       // Navigate back to submissions after evaluation or update
-      navigate(`/submissions/${submission.projectTopic}`);
+      navigate(`/submissions/${submission?.projectTopic}`);
     } catch (error) {
       console.error('Error evaluating or updating submission:', error);
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading submission</p>;
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,12 +122,12 @@ export default function ClippedDrawer() {
                   <ListItemText primary="Dashboard" />
                 </ListItemButton>
               </ListItem>
-              {/* <ListItem disablePadding>
+              <ListItem disablePadding>
                 <ListItemButton
                   component={Link}
                   to="/reference-materials"
                   sx={{
-                    color: 'rgba(0, 0, 0, 0.87)', 
+                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
                   }}
                 >
                   <ListItemIcon>
@@ -127,37 +135,37 @@ export default function ClippedDrawer() {
                   </ListItemIcon>
                   <ListItemText primary="Reference Materials" />
                 </ListItemButton>
-              </ListItem> */}
+              </ListItem>
             </List>
             <Divider />
           </Box>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 0, marginTop:'60px ', width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden' }}>
+        <Box component="main" sx={{ flexGrow: 1, marginTop:'35px ', width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden' }}>
           <Toolbar />
           <Typography className="project-head" sx={{ paddingLeft: 4 }}>
             <h6>Topic:</h6>
           </Typography>
-          <Typography sx={{ display: 'flex', justifyContent: 'flex-start', margin: '2% 0%', paddingLeft: 4 }}>
-            {submission?.projectTopic}
+          <Typography sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: 2, paddingLeft: 4 }}>
+          {submission?.projectTopic}
           </Typography>
-          <div style={{ position: 'relative', marginLeft: 30, }}>
+          <div style={{ position: 'relative', marginLeft: 30, marginTop: 20 }}>
             <Typography className="project-head">
               <h6>Submission:</h6>
             </Typography>
             <TextField
-            style={{ marginBottom: '50px', }}
+            style={{ marginBottom: '30px', marginTop: 20 }}
               className="textField"
               disabled
               id="outlined"
               label=""
-              defaultValue={`Repo Link: ${submission?.repoLink}\nHost link: ${submission?.hostLink}`}
+              defaultValue={`Repo Link: https://github.com/\nHost link: https://aws.amazon.com/`}
               variant="outlined"
               multiline
               rows={5}
               
             />
           </div>
-          <div style={{ marginTop: 30, marginBottom:30, paddingLeft:30 }}>
+          <div style={{ marginTop: 20, marginBottom:30, paddingLeft:30 }}>
             <Grid container spacing={1}>
               <Grid item xs={4} md={4} sm={4}>
                 <TextField
@@ -171,7 +179,7 @@ export default function ClippedDrawer() {
                   onChange={(e) => setMarks(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={8} md={8} sm={8} lg={7.6}>
+              <Grid item xs={8} md={8} sm={8} lg={7.3}>
                 <TextField
                   required
                   fullWidth
@@ -193,7 +201,7 @@ export default function ClippedDrawer() {
             >
               Update
             </Button>
-            <Link to={`/submissions/${submission?.projectTopic}`}>
+            <Link to={`/submissions/${submission.projectTopic}`}>
               <Button variant="outlined" style={{ marginLeft: '30px' }}>
                 Cancel
               </Button>

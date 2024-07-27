@@ -248,7 +248,7 @@ const ProjectsList = () => {
                     </IconButton>
 
                     <IconButton onClick={() => handleDelete(row._id)}>
-                      <DeleteIcon color="primary" />
+                      <DeleteIcon  style={{ color: 'red' }} />
                     </IconButton>
                   </TableCell>
                 </TableRow>

@@ -17,8 +17,11 @@ exports.getSubmissions = async (req, res) => {
 };
 exports.getdata =  async (req, res) => {
   try {
-      const submission = await Submission.findById(req.params.id);
+    console.log('Fetching submission with ID:', req.params.id);
+    const submission = await Submission.findById(req.params.id);
+    
     if (!submission) {
+      console.log('Submission not found');
       return res.status(404).json({ msg: 'Submission not found' });
     }
     res.json(submission);
@@ -27,65 +30,68 @@ exports.getdata =  async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
-// exports.updateSubmission = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { title, description, category, batch, topic, evaluationStatus } = req.body;
 
-//     const updatedSubmission = await Submission.findByIdAndUpdate(
-//       id,
-//       { title, description, category, batch, topic, evaluationStatus },
-//       { new: true, runValidators: true }
-//     );
-
-//     if (!updatedSubmission) {
-//       return res.status(404).json({ message: 'Submission not found' });
-//     }
-
-//     res.status(200).json(updatedSubmission);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
 exports.deleteSubmission = async (req, res) => {
   try {
     const { id } = req.params;
-    await Submission.findByIdAndDelete(id);
+    console.log(`Attempting to delete submission with ID: ${id}`); // Log the ID being processed
+    const deletedSubmission = await Submission.findByIdAndDelete(id);
+    
+    if (!deletedSubmission) {
+      return res.status(404).json({ error: 'Submission not found' });
+    }
+    
+    console.log(`Submission with ID: ${id} deleted successfully`);
     res.json({ message: 'Submission deleted' });
   } catch (error) {
+    console.error(`Error deleting submission with ID: ${id}`, error);
     res.status(500).json({ error: 'Error deleting submission' });
   }
 };
-
-// Evaluate a submission
 exports.evaluateSubmission = async (req, res) => {
   const { id } = req.params;
+  const { marks, comments } = req.body;
+
   try {
-    const { marks, comments } = req.body;
     const submission = await Submission.findById(id);
     if (!submission) {
-      return res.status(404).json({ message: 'Submission not found' });
+      return res.status(404).json({ msg: 'Submission not found' });
+    }
+
+    if (submission.evaluationStatus) {
+      return res.status(400).json({ msg: 'Submission already evaluated' });
     }
 
     submission.marks = marks;
     submission.comments = comments;
-    submission.evaluationStatus = true;
+    submission.evaluationStatus = true; // Set evaluationStatus to completed
 
     await submission.save();
-    res.status(200).json(submission);
+    res.json(submission);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 };
 
+// New function to get a single submission by ID
+exports.getSubmissionById = async (req, res) => {
+  try {
+    const submission = await Submission.findById(req.params.id);
+    if (!submission) {
+      return res.status(404).json({ message: 'Submission not found' });
+    }
+    res.status(200).json(submission);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
-// Update a submission
+// New function to update a submission
 exports.updateSubmission = async (req, res) => {
-  const { id } = req.params;
   try {
     const { marks, comments } = req.body;
-    const submission = await Submission.findById(id);
+    const submission = await Submission.findById(req.params.id);
     if (!submission) {
       return res.status(404).json({ message: 'Submission not found' });
     }
@@ -96,7 +102,6 @@ exports.updateSubmission = async (req, res) => {
     await submission.save();
     res.status(200).json(submission);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(400).json({ message: error.message });
   }
 };

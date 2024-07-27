@@ -32,3 +32,6 @@ const submissionSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('submissiondb', submissionSchema);
+// const Submission = mongoose.models.submissiondb || mongoose.model('submissiondb', submissionSchema);
+
+// module.exports = Submission;
