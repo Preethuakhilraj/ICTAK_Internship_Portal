@@ -39,33 +39,29 @@ export default function ClippedDrawer() {
   const { id } = useParams();
   const [submission, setSubmission] = useState(null);
   const [marks, setMarks] = useState('');
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
-          const response = await axiosInstance.get(`/submission/get/${id}`);
-          console.log("Submission by id:", response);
-          setSubmission(response.data);
-          setMarks(response.data.marks || '');
-          setComments(response.data.comments || '');
-        
+        const response = await axiosInstance.get(`/submission/get/${id}`);
+        console.log("Submission by id:", response);
+        setSubmission(response.data);
+        setMarks(response.data.marks || '');
+        setComments(response.data.comments || '');
       } catch (error) {
         console.error('Error fetching submission:', error);
-       
       }
     };
 
     fetchSubmission();
   }, [id]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       let response;
-      // Assuming submission.evaluationStatus determines if it's already evaluated
       if (submission.evaluationStatus === true) {
         // Update existing evaluation
         response = await axiosInstance.put(`/submission/${id}`, {
@@ -87,7 +83,6 @@ export default function ClippedDrawer() {
       console.error('Error evaluating or updating submission:', error);
     }
   };
-  
 
   return (
     <ThemeProvider theme={theme}>
