@@ -7,10 +7,10 @@ const projectSchema = new Schema({
     type: String,
     required: true
   },
-  stack:  {
-    type: String,
-    required: true
-  },
+  // stack:  {
+  //   type: String,
+  //   required: true
+  // },
   duration:  {
     type: String,
     required: true
