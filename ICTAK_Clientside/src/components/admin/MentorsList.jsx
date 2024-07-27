@@ -204,10 +204,10 @@ const MentorsList = () => {
 
 
   // const [projectTopic] = useState([
-  //   // 'Python Full Stack Development', 
-  //   // 'ReactJS Development', 
-  //   // 'Node.js API Development'
-    
+  //   'Python Full Stack Development', 
+  //   'ReactJS Development', 
+  //   'Node.js API Development'
+
   // ]);
 
 
@@ -320,7 +320,7 @@ const MentorsList = () => {
                   <TableCell align="left">{row.phone}</TableCell>
                   {/* <TableCell align="left">{row.password}</TableCell> */}
 
-                  {/* <TableCell align="left">{row.projectTopic}</TableCell> */}
+                  <TableCell align="left">{row.projectTopic}</TableCell>
                   {/* <TableCell align="left">
                     {row.projectTopics
                       .map((topicId) => {
@@ -330,7 +330,7 @@ const MentorsList = () => {
                       .join(', ')}
                   </TableCell> */}
 
-                  <TableCell>
+                  {/* <TableCell>
                     {row.projectTopics
                       .map(
                         (topicId) =>
@@ -338,7 +338,7 @@ const MentorsList = () => {
                             ?.topic || 'Unknown'
                       )
                       .join(', ')}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align="left">
                     {/* icons for update and delete */}
                     <IconButton onClick={() => handleOpenUpdateDialog(row)}>

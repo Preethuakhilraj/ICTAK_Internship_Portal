@@ -1,5 +1,5 @@
 const express = require('express');
-const { ProjectsList, addProject, updateProject, deleteProject } = require('../controllers/projectsList');
+const { ProjectsList, addProject, updateProject, deleteProject } = require('../controllers/ProjectsList');
 
 const router = express.Router()
 router.use(express.json());
