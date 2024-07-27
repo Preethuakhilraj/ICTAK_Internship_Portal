@@ -16,7 +16,7 @@ const addProject = async (req, res) => {
         //  console.log(req.body);
         var newProject = {
             topic : req.body.topic,
-            stack: req.body.stack,
+            // stack: req.body.stack,
             duration: req.body.duration
         }
         var Project = new projlist(newProject)
@@ -29,18 +29,40 @@ const addProject = async (req, res) => {
 }
 }
 
+// const updateProject = async (req, res) => {
+//     try{
+//         const project = await projlist.findByIdAndUpdate( req.params._id,req.body, {new:true});
+//         res.status(200).json(project);
+//         if (!project)
+//         return res.status(404).json({ message: 'Project not found' });
+//     }
+//     catch (error) {
+//         console.log(error);
+//         res.status(500).json({error:'Internal server error'})
+//     }
+// }
 const updateProject = async (req, res) => {
-    try{
-        const project = await projlist.findByIdAndUpdate( req.params.id,req.body, {new:true});
-        res.status(200).json(project);
-        if (!project)
-        return res.status(404).json({ message: 'Project not found' });
+  try {
+    const project = await projlist.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!project) {
+      // If the project is not found, return a 404 response
+      return res.status(404).json({ message: 'Project not found' });
     }
-    catch (error) {
-        console.log(error);
-        res.status(500).json({error:'Internal server error'})
-    }
-}
+
+    // If the project is found and updated, return the updated project
+    res.status(200).json(project);
+  } catch (error) {
+    console.error(error);
+    // In case of an error, return a 500 response
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 const deleteProject = async (req, res) => {
     try{
