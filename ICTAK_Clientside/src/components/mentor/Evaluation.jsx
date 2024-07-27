@@ -12,7 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Dashboard, LibraryBooks } from '@mui/icons-material';
+import { Dashboard } from '@mui/icons-material';
 import { Button, Grid, TextField } from '@mui/material';
 import axiosInstance from '../axiosinterceptor';
 import './Mentordashboard.css';
@@ -39,28 +39,27 @@ export default function ClippedDrawer() {
   const { id } = useParams();
   const [submission, setSubmission] = useState(null);
   const [marks, setMarks] = useState('');
-  const [comments, setComments] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [comments, setComments] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
-        const response = await axiosInstance.get(`/submission/get/${id}`);
-        setSubmission(response.data);
-        setMarks(response.data.marks || '');
-        setComments(response.data.comments || '');
-        setLoading(false);
+          const response = await axiosInstance.get(`/submission/get/${id}`);
+          console.log("Submission by id:", response);
+          setSubmission(response.data);
+          setMarks(response.data.marks || '');
+          setComments(response.data.comments || '');
+        
       } catch (error) {
         console.error('Error fetching submission:', error);
-        setError(error);
-        setLoading(false);
+       
       }
     };
 
     fetchSubmission();
   }, [id]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,9 +87,7 @@ export default function ClippedDrawer() {
       console.error('Error evaluating or updating submission:', error);
     }
   };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading submission</p>;
+  
 
   return (
     <ThemeProvider theme={theme}>
