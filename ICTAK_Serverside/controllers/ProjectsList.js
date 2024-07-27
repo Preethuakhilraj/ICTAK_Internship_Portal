@@ -1,4 +1,4 @@
-const projlist = require('../model/projectslist');
+const projlist = require('../model/projects');
 
 const ProjectsList = async (req, res) => {   
     try {
