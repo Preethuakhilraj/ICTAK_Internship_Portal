@@ -1,8 +1,9 @@
-const mentorlist = require('../model/mentor')
+const mentorlist = require('../model/mentor');
+const Project = require('../model/projects');
 
 const MentorsList = async (req, res) => {
   try {
-    const mentors = await mentorlist.find();
+    const mentors = await mentorlist.find().populate('projectTopics');
     console.log(mentors)
     res.status(200).json(mentors);
   } catch (err) {
@@ -18,7 +19,7 @@ const AddMentors = async (req, res) => {
             email: req.body.email,
             phone: req.body.phone,
             password: req.body.password,
-            projectTopic: req.body.projectTopic,
+            projectTopics: req.body.projectTopics,
         }
         var Mentor = new mentorlist(newMentor)
         await Mentor.save();
