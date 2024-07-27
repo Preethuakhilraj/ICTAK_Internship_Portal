@@ -175,6 +175,7 @@ const MentorsList = () => {
     }
   };
 
+
   return (
     <Box
       sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f5f5f5' }}
@@ -274,6 +275,7 @@ const MentorsList = () => {
                   </TableCell>
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="left">{row.phone}</TableCell>
+
                   <TableCell align="left">
                     {row.projectTopics.join(', ')}{' '}
                     {/* Directly display topics */}
