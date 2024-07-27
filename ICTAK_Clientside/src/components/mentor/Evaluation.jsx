@@ -12,7 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Dashboard, LibraryBooks } from '@mui/icons-material';
+import { Dashboard } from '@mui/icons-material';
 import { Button, Grid, TextField } from '@mui/material';
 import axiosInstance from '../axiosinterceptor';
 import './Mentordashboard.css';
@@ -40,22 +40,18 @@ export default function ClippedDrawer() {
   const [submission, setSubmission] = useState(null);
   const [marks, setMarks] = useState('');
   const [comments, setComments] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
         const response = await axiosInstance.get(`/submission/get/${id}`);
+        console.log("Submission by id:", response);
         setSubmission(response.data);
         setMarks(response.data.marks || '');
         setComments(response.data.comments || '');
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching submission:', error);
-        setError(error);
-        setLoading(false);
       }
     };
 
@@ -66,7 +62,6 @@ export default function ClippedDrawer() {
     e.preventDefault();
     try {
       let response;
-      // Assuming submission.evaluationStatus determines if it's already evaluated
       if (submission.evaluationStatus === true) {
         // Update existing evaluation
         response = await axiosInstance.put(`/submission/${id}`, {
@@ -88,9 +83,6 @@ export default function ClippedDrawer() {
       console.error('Error evaluating or updating submission:', error);
     }
   };
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading submission</p>;
 
   return (
     <ThemeProvider theme={theme}>

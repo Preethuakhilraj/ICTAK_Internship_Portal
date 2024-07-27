@@ -4,29 +4,32 @@ const Schema = mongoose.Schema;
 
 // Define Mentor Schema
 const mentorSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
     unique: true
   },
-  phone: {
-    type: String,
-    required: true,
-  },
   password: {
     type: String,
     required: true
   },
+<<<<<<< HEAD
+  role: {
+    type: String,
+    required: true
+  },
+  projectTopic: {
+    type: [String], // Changed to an array of strings
+    required: true
+  }
+=======
 
   // projectTopic: {
   //   type: [String], // Changed to an array of strings
   //   required: true
   // }
   projectTopics: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project' }],
+>>>>>>> 7bb62c633e2e0eca63fbb43608a09c84015c0018
 });
 
 // Pre-save middleware to hash the password before saving
