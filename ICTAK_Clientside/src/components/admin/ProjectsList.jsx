@@ -38,7 +38,7 @@ const ProjectsList = () => {
   const [data, setData] = useState([]);
   const [newProject, setNewProject] = useState({
     topic: '',
-    stack: '',
+    // stack: '',
     duration: '',
   });
   const [openAdd, setOpenAdd] = useState(false);
@@ -66,7 +66,7 @@ const ProjectsList = () => {
   const handleCloseAddDialog = () => {
     setNewProject({
       topic: '',
-      stack: '',
+      // stack: '',
       duration: '',
     });
     setOpenAdd(false);
@@ -78,7 +78,7 @@ const ProjectsList = () => {
   };
 
   const handleAdd = async () => {
-    if (!newProject.topic || !newProject.stack || !newProject.duration) {
+    if (!newProject.topic  || !newProject.duration) {
       alert('Please fill in all fields.');
       return;
     }
@@ -112,6 +112,7 @@ const ProjectsList = () => {
 
   const handleUpdate = async () => {
     try {
+      console.log('Updating project:', updateProject);
       await axiosInstance.patch(
         `/admin/updateproject/${updateProject._id}`,
         updateProject
@@ -218,9 +219,9 @@ const ProjectsList = () => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold' }}>Projects</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>
+                {/* <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                   Stack
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                   Duration
                 </TableCell>
@@ -238,7 +239,7 @@ const ProjectsList = () => {
                   <TableCell component="th" scope="row">
                     {row.topic}
                   </TableCell>
-                  <TableCell align="right">{row.stack}</TableCell>
+                  {/* <TableCell align="right">{row.stack}</TableCell> */}
                   <TableCell align="right">{row.duration}</TableCell>
                   <TableCell align="right">
                     {/* icons for updatte and delete */}
@@ -269,7 +270,7 @@ const ProjectsList = () => {
               value={newProject.topic}
               onChange={handleAddInputChange}
             />
-            <TextField
+            {/* <TextField
               margin="dense"
               name="stack"
               label="Stack"
@@ -277,7 +278,7 @@ const ProjectsList = () => {
               fullWidth
               value={newProject.stack}
               onChange={handleAddInputChange}
-            />
+            /> */}
             <TextField
               margin="dense"
               name="duration"
@@ -311,7 +312,7 @@ const ProjectsList = () => {
               value={updateProject?.topic || ''}
               onChange={handleUpdateInputChange}
             />
-            <TextField
+            {/* <TextField
               margin="dense"
               name="stack"
               label="Stack"
@@ -319,7 +320,7 @@ const ProjectsList = () => {
               fullWidth
               value={updateProject?.stack || ''}
               onChange={handleUpdateInputChange}
-            />
+            /> */}
             <TextField
               margin="dense"
               name="duration"
