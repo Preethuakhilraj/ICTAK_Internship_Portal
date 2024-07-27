@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-const mentorlist = require('../model/mentorslist')
-=======
 const mentorlist = require('../model/mentor');
 const Project = require('../model/projects');
->>>>>>> 7bb62c633e2e0eca63fbb43608a09c84015c0018
 
 const MentorsList = async (req, res) => {
   try {
