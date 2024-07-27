@@ -179,7 +179,7 @@ const ProjectsList = () => {
             </List>
           </Link>
 
-          {/* <Link to={'/mentors/'}>
+          <Link to={'/admin/mentorslist/'}>
             <List>
               {['Mentors'].map((text) => (
                 <ListItem key={text} disablePadding>
@@ -194,7 +194,7 @@ const ProjectsList = () => {
                 </ListItem>
               ))}
             </List>
-          </Link> */}
+          </Link> 
 
           <Divider />
         </Box>
