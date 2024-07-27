@@ -11,14 +11,18 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  createTheme
+  createTheme,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Dashboard, LibraryBooks } from '@mui/icons-material';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
 
-const drawerWidth = 267;
+const drawerWidth = 240;
 
 const theme = createTheme({
   typography: {
@@ -31,10 +35,12 @@ const ReferenceMaterial = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [currentMaterial, setCurrentMaterial] = useState(null);
+  const [openMaterialDelete, setOpenMaterialDelete] = useState(false);
 
   const fetchMaterials = async () => {
     try {
-      const response = await axiosInstance.get('/reference/'); 
+      const response = await axiosInstance.get('/reference/'); // Adjust the endpoint as necessary
       setMaterials(response.data);
       setLoading(false);
     } catch (error) {
@@ -52,13 +58,27 @@ const ReferenceMaterial = () => {
     navigate(`/reference-materials-form`);
   };
 
-  const handleDeleteMaterial = async (id) => {
+  const handleDeleteMaterial = (id) => {
+    setCurrentMaterial(id);
+    setOpenMaterialDelete(true);
+  };
+
+  const confirmDeleteMaterial = async () => {
     try {
-      await axiosInstance.delete(`/reference/${id}`);
-      setMaterials(materials.filter((material) => material._id !== id));
+      await axiosInstance.delete(`/reference/${currentMaterial}`);
+      setMaterials((prevMaterials) => prevMaterials.filter((material) => material._id !== currentMaterial));
+      setOpenMaterialDelete(false);
+      setCurrentMaterial(null);
     } catch (error) {
       console.error('Error deleting material:', error);
+      setOpenMaterialDelete(false);
+      setCurrentMaterial(null);
     }
+  };
+
+  const handleCloseMaterial = () => {
+    setOpenMaterialDelete(false);
+    setCurrentMaterial(null);
   };
 
   if (loading) return <Box display="flex" justifyContent="center" alignItems="center" height="100vh"><CircularProgress /></Box>;
@@ -85,7 +105,7 @@ const ReferenceMaterial = () => {
                   component={Link}
                   to="/mentordashboard"
                   sx={{
-                    color: 'rgba(0, 0, 0, 0.87)', 
+                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
                   }}
                 >
                   <ListItemIcon>
@@ -99,7 +119,7 @@ const ReferenceMaterial = () => {
                   component={Link}
                   to="/reference-materials"
                   sx={{
-                    color: 'rgba(0, 0, 0, 0.87)', 
+                    color: 'rgba(0, 0, 0, 0.87)', // Default text color
                   }}
                 >
                   <ListItemIcon>
@@ -112,7 +132,7 @@ const ReferenceMaterial = () => {
             <Divider />
           </Box>
         </Drawer>
-    <Box p={2} sx={{ marginTop: '5%'}}>
+    <Box p={2} sx={{ marginTop: '55px'}}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
         <Box display="flex" justifyContent="flex-end" mb={2}>
@@ -152,6 +172,20 @@ const ReferenceMaterial = () => {
           </Paper>
         </Grid>
       </Grid>
+      <Dialog open={openMaterialDelete} onClose={handleCloseMaterial}>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Are you sure you want to delete this reference material?</DialogContentText>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+              <Button onClick={handleCloseMaterial} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={confirmDeleteMaterial} color="secondary">
+                Confirm
+              </Button>
+            </Box>
+          </DialogContent>
+        </Dialog>
     </Box>
     </Box>
     </ThemeProvider>
