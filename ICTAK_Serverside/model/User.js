@@ -43,7 +43,7 @@
 // module.exports = User;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Define User Schema
 const userSchema = new Schema({
