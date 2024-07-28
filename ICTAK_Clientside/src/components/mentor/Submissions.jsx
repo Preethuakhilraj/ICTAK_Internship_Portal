@@ -199,13 +199,13 @@ const Submissions = () => {
                     <TableCell align="center">{submission.evaluationStatus ? 'Evaluated' : 'Pending'}</TableCell>
                     <TableCell align="center">
                       <IconButton aria-label="check" onClick={() => handleEvaluate(submission._id, submission.evaluationStatus)}>
-                        <CheckCircleRounded />
+                        <CheckCircleRounded style={{ color: '#21243d' }} />
                       </IconButton>
                       <IconButton aria-label="edit" onClick={() => handleEdit(submission._id)}>
-                        <EditRounded />
+                        <EditRounded color="primary" />
                       </IconButton>
                       <IconButton aria-label="delete" onClick={() => handleDelete(submission._id)}>
-                        <DeleteRounded />
+                        <DeleteRounded style={{ color: 'red' }} />
                       </IconButton>
                     </TableCell>
                   </TableRow>

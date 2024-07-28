@@ -162,7 +162,7 @@ const ReferenceMaterial = () => {
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleDeleteMaterial(material._id)} >
-                        <DeleteIcon />
+                        <DeleteIcon style={{ color: 'red' }} />
                       </IconButton>
                     </TableCell>
                   </TableRow>
