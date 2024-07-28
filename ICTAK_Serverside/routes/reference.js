@@ -3,9 +3,8 @@ const router = express.Router();
 const auth = require('../Middleware/Auth');
 const { getReferences, addReference, deleteReference } = require('../controllers/referenceController');
 
-router.get('/', getReferences);
-
-router.post('/add', addReference);
-router.delete('/:referenceId', deleteReference);
+router.get('/', auth, getReferences);
+router.post('/add',auth, addReference);
+router.delete('/:referenceId', auth,deleteReference);
 
 module.exports = router;

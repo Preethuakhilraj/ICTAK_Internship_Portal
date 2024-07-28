@@ -7,6 +7,7 @@ import Evaluation from './components/mentor/Evaluation';
 import ReferenceMaterial from './components/mentor/ReferenceMaterial';
 import ReferenceMaterialForm from './components/mentor/ReferenceMaterialForm';
 import Main from './components/Main';
+import Privateroutes from './Privateroutes';
 //home
 import Navbar from "./components/Home/Navbar";
 import Hero from "./components/Home/Hero";
@@ -86,21 +87,15 @@ const internships = [
 
 function App() {
  
-
   return (
     <Routes>
       <Route path="/" element={<HomeWithNavbar />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/admin" element={<Main child={<ProjectsList />} />} />
-      <Route path="/admin/mentorslist" element={<Main child={<MentorsList />} />} />
-      <Route
-        path="/mentordashboard"
-        element={<Main child={<MentorDashboard />} />}
-      />
-      <Route
-        path="/submissions/:projectTopic"
-        element={<Main child={<Submissions />} />}
-      />
+      <Route element={<Privateroutes/>}>
+             <Route path="/admin" element={<Main child={<ProjectsList />} />} />
+             <Route path="/admin/mentorslist" element={<Main child={<MentorsList />} />} />
+             <Route path="/mentordashboard"   element={<Main child={<MentorDashboard />} />}      />
+             <Route path="/submissions/:projectTopic"  element={<Main child={<Submissions />} />}  />
       <Route path="/evaluate/:id" element={<Main child={<Evaluation />} />} />
       <Route path="/edit/:id" element={<Main child={<Evaluation />} />} />
       <Route
@@ -111,7 +106,9 @@ function App() {
         path="/reference-materials-form"
         element={<Main child={<ReferenceMaterialForm />} />}
       />
+          </Route>
     </Routes>
+
   );
 }
 
