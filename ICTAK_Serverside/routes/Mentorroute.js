@@ -20,7 +20,7 @@ router.get('/projects', auth, async (req, res) => {
     console.log('Mentor Object:', mentor);
 
     // Ensure projectTopic is returned as an array
-    const projects = Array.isArray(mentor.projectTopic) ? mentor.projectTopic : [mentor.projectTopic];
+    const projects = Array.isArray(mentor.projectTopics) ? mentor.projectTopics : [mentor.projectTopics];
 
     res.json(projects);
   } catch (err) {
