@@ -62,9 +62,14 @@ exports.evaluateSubmission = async (req, res) => {
       return res.status(400).json({ msg: 'Submission already evaluated' });
     }
 
-    submission.marks = marks;
-    submission.comments = comments;
-    submission.evaluationStatus = true; // Set evaluationStatus to completed
+    // submission.marks = marks;
+    // submission.comments = comments;
+    // submission.evaluationStatus = true; // Set evaluationStatus to completed
+    if (marks !== undefined ) {
+      submission.marks = marks;
+      submission.comments = comments;
+      submission.evaluationStatus = true; // Set evaluationStatus to completed if marks and comments are provided
+    }
 
     await submission.save();
     res.json(submission);
