@@ -23,6 +23,7 @@ const submissionSchema = new mongoose.Schema({
   },
   marks: {
     type: Number,
+    required: true,
     default: 0 // Default value can be adjusted as needed
   },
   comments: {

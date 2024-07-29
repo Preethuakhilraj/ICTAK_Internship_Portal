@@ -47,6 +47,7 @@ const MentorsList = () => {
   const [openAdd, setOpenAdd] = useState(false);
   const [updateMentor, setMentorUpdate] = useState(null);
   const [openUpdate, setOpenUpdate] = useState(false);
+  
 
   useEffect(() => {
     // Fetch the list of mentors
@@ -104,26 +105,26 @@ const MentorsList = () => {
     });
   };
 
-  const handleAdd = async () => {
-    if (
-      !newMentor.name ||
-      !newMentor.email ||
-      !newMentor.phone ||
-      !newMentor.password ||
-      !newMentor.projectTopics.length
-    ) {
-      alert('Please fill in all fields.');
-      return;
-    }
+  // const handleAdd = async () => {
+  //   if (
+  //     !newMentor.name ||
+  //     !newMentor.email ||
+  //     !newMentor.phone ||
+  //     !newMentor.password ||
+  //     !newMentor.projectTopics.length
+  //   ) {
+  //     alert('Please fill in all fields.');
+  //     return;
+  //   }
 
-    try {
-      const response = await axiosInstance.post('/admin/addmentor', newMentor);
-      setData([...data, response.data]);
-      handleCloseAddDialog();
-    } catch (error) {
-      console.error('Error adding Mentor:', error);
-    }
-  };
+  //   try {
+  //     const response = await axiosInstance.post('/admin/addmentor', newMentor);
+  //     setData([...data, response.data]);
+  //     handleCloseAddDialog();
+  //   } catch (error) {
+  //     console.error('Error adding Mentor:', error);
+  //   }
+  // };
 
   const handleOpenUpdateDialog = (mentor) => {
     setMentorUpdate(mentor);
@@ -174,6 +175,42 @@ const MentorsList = () => {
       }
     }
   };
+
+
+  //error
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    password: false,
+    projectTopics: false,
+  });
+  
+  const handleAdd = async () => {
+    const newErrors = {
+      name: !newMentor.name,
+      email: !newMentor.email,
+      phone: !newMentor.phone,
+      password: !newMentor.password,
+      projectTopics: !newMentor.projectTopics.length,
+    };
+  
+    setErrors(newErrors);
+  
+    if (Object.values(newErrors).includes(true)) {
+      alert('Please fill in all fields.');
+      return;
+    }
+  
+    try {
+      const response = await axiosInstance.post('/admin/addmentor', newMentor);
+      setData([...data, response.data]);
+      handleCloseAddDialog();
+    } catch (error) {
+      console.error('Error adding Mentor:', error);
+    }
+  };
+  
 
 
   return (
@@ -306,6 +343,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={newMentor.name}
                 onChange={handleAddInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <TextField
                 margin="dense"
@@ -316,6 +358,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={newMentor.email}
                 onChange={handleAddInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <TextField
                 margin="dense"
@@ -326,6 +373,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={newMentor.phone}
                 onChange={handleAddInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <TextField
                 margin="dense"
@@ -336,6 +388,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={newMentor.password}
                 onChange={handleAddInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <Autocomplete
                 multiple
@@ -347,6 +404,11 @@ const MentorsList = () => {
                     {...params}
                     label="Project Topics"
                     variant="standard"
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                      },
+                    }}
                   />
                 )}
               />
@@ -370,6 +432,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={updateMentor?.name || ''}
                 onChange={handleUpdateInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <TextField
                 margin="dense"
@@ -380,6 +447,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={updateMentor?.email || ''}
                 onChange={handleUpdateInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <TextField
                 margin="dense"
@@ -390,6 +462,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={updateMentor?.phone || ''}
                 onChange={handleUpdateInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <TextField
                 margin="dense"
@@ -400,6 +477,11 @@ const MentorsList = () => {
                 variant="standard"
                 value={updateMentor?.password || ''}
                 onChange={handleUpdateInputChange}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                  },
+                }}
               />
               <Autocomplete
                 multiple
@@ -414,6 +496,11 @@ const MentorsList = () => {
                     {...params}
                     label="Project Topics"
                     variant="standard"
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        borderBottom: errors.name ? '1px solid red' : '1px solid #ccc',
+                      },
+                    }}
                   />
                 )}
               />

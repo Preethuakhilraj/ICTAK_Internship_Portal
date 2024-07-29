@@ -15,8 +15,9 @@ const Navbar = () => {
 
   return (
     <nav className={` ${sticky? 'dark-nav': ''} `}>
+      <Link to={'/'}>
       <img src={logo} alt="" className="logo" />
-
+      </Link>
       <ul>
         {/* <li>About us</li> */}
         <li>

@@ -8,7 +8,7 @@ const Image = 'https://images.pexels.com/photos/5950164/pexels-photo-5950164.jpe
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
- 
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +25,21 @@ export default function Login() {
         }
       } 
     } catch (error) {
-      console.error('Login error:', error);
+      // console.error('Login error:', error);
+      if (error.response && error.response.status === 401) {
+        // Unauthorized - invalid credentials
+        const errorMessage = error.response.data.message;
+        if (errorMessage === 'Invalid username') {
+          setError('Invalid username');
+        } else if (errorMessage === 'Invalid password') {
+          setError('Invalid password');
+        } else {
+          setError('Invalid username or password');
+        }
+      } else {
+        console.error('Login error:', error);
+        setError('An error occurred. Please try again.');
+      }
     }
   };
   const backgroundImage = 'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
@@ -129,6 +143,11 @@ export default function Login() {
                   fullWidth
                   margin="normal"
                 />
+                {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+            {error}
+          </Typography>
+        )}
                                 <Button
                   type="submit"
                   variant="contained"

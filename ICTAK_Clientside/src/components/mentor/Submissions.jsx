@@ -196,7 +196,7 @@ const Submissions = () => {
                     <TableCell align="center">{submission.name}</TableCell>
                     <TableCell align="center">{submission.batch}</TableCell>
                     <TableCell align="center">{submission.topic}</TableCell>
-                    <TableCell align="center">{submission.evaluationStatus ? 'Evaluated' : 'Pending'}</TableCell>
+                    <TableCell align="center">{submission.evaluationStatus ? 'Completed' : 'Pending'}</TableCell>
                     <TableCell align="center">
                       <IconButton aria-label="check" onClick={() => handleEvaluate(submission._id, submission.evaluationStatus)}>
                         <CheckCircleRounded style={{ color: '#21243d' }} />
