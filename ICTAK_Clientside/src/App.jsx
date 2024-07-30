@@ -90,7 +90,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomeWithNavbar />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<LoginWithNavbar />} />
       <Route element={<Privateroutes/>}>
              <Route path="/admin" element={<Main child={<ProjectsList />} />} />
              <Route path="/admin/mentorslist" element={<Main child={<MentorsList />} />} />
@@ -118,11 +118,11 @@ function HomeWithNavbar() {
 
       <div className="containers">
         <Title
-          subTitle="Popular courses Provided by ICT Acadamy"
+          subTitle="Popular courses Provided by ICT Academy"
           title="We offer"
         />
         <Programs />
-        <Title subTitle="Internships programs" title="By ICTAK" />
+        <Title subTitle="Internship programs" title="By ICTAK" />
 
         <div className="card-face">
           {internships.map((card) => (
@@ -136,5 +136,17 @@ function HomeWithNavbar() {
     </>
   );
 }
+
+//
+
+function LoginWithNavbar() {
+  return (
+    <>
+     <Navbar />
+     <Login />
+          </>
+  );
+}
+
 
 export default App

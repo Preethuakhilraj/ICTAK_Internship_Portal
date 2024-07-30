@@ -32,6 +32,23 @@ app.use('/reference', referenceroute);
 app.use('/admin', projectlistRoute)
 app.use('/admin', mentorslistRoute)
 
+
+// cors error solveing during deployment
+app.use(cors({
+    origin: ['https://ictak-internship-portal-client.vercel.app/'],
+    credentials: true,
+    methods: ['POST', 'GET', 'PATCH', 'DELETE']
+}));
+
+
+//deployment
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Anything that doesn't match the above, send back index.html
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`server is listening on PORT ${process.env.PORT}`);
 })

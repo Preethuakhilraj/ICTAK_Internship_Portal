@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div className="hero ">
       <div className="hero-text">
-        <h1>Welcome to ICT Acadamy of Kerala</h1>
+        <h1>Welcome to ICT Academy of Kerala</h1>
         <p>
           We know that finding a meaningful and rewarding job can be a long
           journey. Our goal is to make that process as easy as possible for you,
