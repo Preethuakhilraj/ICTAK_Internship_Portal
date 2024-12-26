@@ -7,6 +7,7 @@ import Evaluation from './components/mentor/Evaluation';
 import ReferenceMaterial from './components/mentor/ReferenceMaterial';
 import ReferenceMaterialForm from './components/mentor/ReferenceMaterialForm';
 import Main from './components/Main';
+import Privateroutes from './Privateroutes';
 //home
 import Navbar from "./components/Home/Navbar";
 import Hero from "./components/Home/Hero";
@@ -23,6 +24,7 @@ import Virtual_internship_rpa from "./assets/virtual-internship-RPA.png";
 import Java_programming from "./assets/java-programming.png";
 import Footer from "./components/Home/Footer";
 import ProjectsList from './components/admin/ProjectsList';
+import MentorsList from './components/admin/MentorsList';
 
 const internships = [
   {
@@ -85,31 +87,26 @@ const internships = [
 
 function App() {
  
-
   return (
     <Routes>
       <Route path="/" element={<HomeWithNavbar />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/admin" element={<Main child={<ProjectsList />} />} />
-      <Route
-        path="/mentordashboard"
-        element={<Main child={<MentorDashboard />} />}
-      />
-      <Route
-        path="/submissions/:projectTopic"
-        element={<Main child={<Submissions />} />}
-      />
+      <Route path="/login" element={<LoginWithNavbar />} />
+      <Route element={<Privateroutes/>}>
+             <Route path="/admin" element={<Main child={<ProjectsList />} />} />
+             <Route path="/admin/mentorslist" element={<Main child={<MentorsList />} />} />
+             <Route path="/mentordashboard"   element={<Main child={<MentorDashboard />} />}      />
+             <Route path="/submissions/:projectTopic"  element={<Main child={<Submissions />} />}  />
       <Route path="/evaluate/:id" element={<Main child={<Evaluation />} />} />
       <Route path="/edit/:id" element={<Main child={<Evaluation />} />} />
-      <Route
-        path="/reference-materials"
-        element={<Main child={<ReferenceMaterial />} />}
+      <Route path="/reference-materials" element={<Main child={<ReferenceMaterial />} />}
       />
       <Route
         path="/reference-materials-form"
         element={<Main child={<ReferenceMaterialForm />} />}
       />
+          </Route>
     </Routes>
+
   );
 }
 
@@ -121,11 +118,11 @@ function HomeWithNavbar() {
 
       <div className="containers">
         <Title
-          subTitle="Popular courses Provided by ICT Acadamy"
+          subTitle="Popular courses Provided by ICT Academy"
           title="We offer"
         />
         <Programs />
-        <Title subTitle="Internships programs" title="By ICTAK" />
+        <Title subTitle="Internship programs" title="By ICTAK" />
 
         <div className="card-face">
           {internships.map((card) => (
@@ -139,5 +136,17 @@ function HomeWithNavbar() {
     </>
   );
 }
+
+//
+
+function LoginWithNavbar() {
+  return (
+    <>
+     <Navbar />
+     <Login />
+          </>
+  );
+}
+
 
 export default App

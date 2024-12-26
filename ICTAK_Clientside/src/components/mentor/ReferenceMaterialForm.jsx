@@ -93,11 +93,11 @@ const ReferenceMaterialForm = () => {
             <Divider />
           </Box>
         </Drawer>
-        <Box sx={{ flex: 1, p: 3, marginLeft:'30px', display: 'flex', gap: 3, marginTop: '20px' }}>
+        <Box sx={{ flex: 1, p: 3, marginLeft:'30px', display: 'flex', gap: 3, marginTop: '65px' }}>
           <Box sx={{ width: '60%' }}>
-            <Typography variant="h4" gutterBottom>
+            {/* <Typography variant="h4" gutterBottom>
               Reference Materials Addition
-            </Typography>
+            </Typography> */}
             <form onSubmit={handleSubmit}>
               <TextField
                 required

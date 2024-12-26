@@ -3,17 +3,16 @@ const Schema = mongoose.Schema;
 
 // Define Project Schema
 const projectSchema = new Schema({
-  title: {
+  topic: {
     type: String,
     required: true
   },
-  description: {
+  // stack:  {
+  //   type: String,
+  //   required: true
+  // },
+  duration:  {
     type: String,
-    required: true
-  },
-  mentorId: {
-    type: Schema.Types.ObjectId,
-    ref: 'mentor',
     required: true
   }
 });

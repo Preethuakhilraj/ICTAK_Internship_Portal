@@ -9,6 +9,7 @@ const submissionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  
   topic: {
     type: String,
     required: true
@@ -23,7 +24,7 @@ const submissionSchema = new mongoose.Schema({
   },
   marks: {
     type: Number,
-    default: 0 // Default value can be adjusted as needed
+      default: 0 // Default value can be adjusted as needed
   },
   comments: {
     type: String,
@@ -32,3 +33,6 @@ const submissionSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('submissiondb', submissionSchema);
+// const Submission = mongoose.models.submissiondb || mongoose.model('submissiondb', submissionSchema);
+
+// module.exports = Submission;

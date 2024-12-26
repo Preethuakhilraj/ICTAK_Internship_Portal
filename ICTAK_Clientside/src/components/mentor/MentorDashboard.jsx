@@ -113,7 +113,7 @@ export default function MentorDashboard() {
           </Box>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, px: 3, py: 2, width: `calc(100% - ${drawerWidth}px)`, boxSizing: 'border-box', overflowX: 'hidden' }}>
-          <Toolbar />
+        <Toolbar />
           <div className="container">
             <img
               src="https://jobick.dexignlab.com/react/demo/static/media/profile1.45c723dab8349c3d75ef.jpg"
@@ -140,8 +140,8 @@ export default function MentorDashboard() {
             Projects
           </Typography>
           <div className="card-container">
-            {data.map((project) => (
-              <Card key={project.id} className="project-card">
+            {data.map((projectTopics) => (
+              <Card key={projectTopics.id} className="project-card">
                 <CardMedia
                   component="img"
                   src="https://cdn-jokon.nitrocdn.com/AwoEWBPBIgGShARSNTzFxrQfWkDFHrAw/assets/images/optimized/rev-470ca55/www.rankraze.com/wp-content/uploads/2023/07/internship-blue-green-typography-banner-260nw-1366933799-e1690735957752.webp"
@@ -150,13 +150,13 @@ export default function MentorDashboard() {
                 />
                 <CardContent className="project-card-details">
                   <Typography variant="h6" className="project-card-title">
-                  {project}
+                  {projectTopics}
                   </Typography>
                   <Button
                     size="small"
                     variant="contained"
                     className="view-button"
-                    onClick={() => handleView(project)}
+                    onClick={() => handleView(projectTopics)}
                   >
                     View
                   </Button>

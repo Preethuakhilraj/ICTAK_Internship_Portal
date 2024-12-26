@@ -1,11 +1,12 @@
 import React from "react";
 import "./Hero.css";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <div className="hero ">
       <div className="hero-text">
-        <h1>Welcome to ICT Acadamy of Kerala</h1>
+        <h1>Welcome to ICT Academy of Kerala</h1>
         <p>
           We know that finding a meaningful and rewarding job can be a long
           journey. Our goal is to make that process as easy as possible for you,
@@ -13,7 +14,8 @@ const Hero = () => {
           look forward to coming to every day. Start your journey with us by
           browsing available jobs.
         </p>
-        <button className="btn2">Join us</button>
+        <Link to={'/login'}>
+        <button className="btn2">Join us</button></Link>
       </div>
     </div>
   );
